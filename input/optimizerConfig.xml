@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<config>
+  <!--start-index>0</start-index-->
+  <!--stop-index>100</stop-index-->
+  <mmc-probability>100</mmc-probability>
+  <mmc-run-count>200</mmc-run-count>
+  <min-displacement>9e-3</min-displacement>
+  <max-displacement>3e-2</max-displacement>
+  <scaling-probability>50</scaling-probability>
+  <min-scaling>0</min-scaling>
+  <max-scaling>0.1</max-scaling>
+  <max-thread-count>4</max-thread-count>
+  <periodic-table>../input/elements.xml</periodic-table>
+  <input>../data/InAs_GaSb/interface.xml</input>
+  <output>../data/InAs_GaSb/optimized.xml</output>
+  <log>../data/InAs_GaSb/optimizer.log</log>
+  <tersoff>../input/tersoff.xml</tersoff>
+  <neighbor-layers>1</neighbor-layers>
+  <runs>10</runs>
+  <check-runs>20</check-runs>
+  <energy-drop>3</energy-drop>
+  <reduction>3</reduction>
+  <min-energy>1e-4</min-energy>
+  <switch>static-optimization</switch>
+  <!--switch>dynamic-optimization</switch-->
+  <xyz>../data/InAs_GaSb/optimized.xyz</xyz>
+  <journal-preamble>../data/InAs_GaSb/journal/</journal-preamble>
+  <!--switch>verbose</switch-->
+  <switch>print-statistics</switch>
+</config>
+
+<!--- Local variables: -->
+<!--- mode: xml -->
+<!--- indent-tabs-mode: nil -->
+<!--- tab-width: 4 -->
+<!--- End: -->
+<!--- vim:noexpandtab:sw=4:ts=4: -->

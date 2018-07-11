@@ -1,0 +1,148 @@
+import re
+import os
+import subprocess
+
+##################################################################
+
+include_re = re.compile(r'^\#include\s+(\S+)$', re.M)
+
+# includes all files define by an #include statement which
+# are not standard libraries also to be checked if they
+# were modified
+def my_scan(node, env, path, arg):
+
+   contents = node.get_text_contents()
+   includes = include_re.findall(contents)
+
+   if includes == []:
+      return []
+   results = []
+ 
+   for inc in includes:
+
+      # append to local includes the relative path from SCons root
+      if inc[0] == '"':
+         results.append(str(node).split(os.sep)[0] + os.sep + inc[1:-1])
+         continue
+
+      if inc[0] != '<':
+         continue
+
+      inc = inc[1:-1]
+      dirName = inc.split(os.sep)
+
+      if len(dirName) == 1:
+         continue
+      
+      if dirName[0] not in env['MYPATH']:
+         continue
+
+      if not os.path.exists(inc):
+         continue
+      
+      results.append(inc)
+#   print(str(includes) + ' ---> ' + str(results))
+   return env.File(results)
+
+# recursion activated for the scanner
+scanner = Scanner(name = 'myscanner',
+                  function = my_scan,
+                  argument = None,
+                  skeys = ['.cpp','.cc'],
+                  path_function = None,
+                  recursive=1
+                  )
+SourceFileScanner.add_scanner('.cpp', scanner)
+
+##################################################################
+
+# set job count of scons to #cpus +1
+# different methods found at
+#http://stackoverflow.com/questions/1006289/how-to-find-out-the-number-of-cpus-using-python#1006301
+try:
+   processorCount = open('/proc/cpuinfo').read().count('processor\t:')
+except: 
+   processorCount = 2
+
+print('job count of scons set to ' + str(processorCount+1) )
+SetOption('num_jobs',processorCount+1)
+
+##################################################################
+
+env = Environment( MYPATH = ['physics',
+                             'misc',
+                             'simulation',
+                             'visualization',
+                             'jsoncpp',
+                             'pugixml',
+                             'tclap',
+			                 'spdlog',
+                             'easyloggingcpp',
+                             'xtalsim'
+                          ])
+
+# option --no-as-needed not available on OSX
+if env['PLATFORM'] != 'darwin':
+   env.Append(LINKFLAGS = '-Wl,--no-as-needed')
+
+#JM c++14 not installed on my system
+env.Append(CCFLAGS = '-std=c++11')
+env.Append(CCFLAGS = '-msseregparm')
+env.Append(CCFLAGS = '-fstack-protector-all')
+env.Append(CCFLAGS = '-I ./ -I ../')
+env.Append(CCFLAGS = '-Wfloat-equal')
+#env.Append(LINKFLAGS = '`pkg-config --libs gsl`')
+env.Append(LINKFLAGS = '-lm')
+
+if ARGUMENTS.get('vtk', 0):
+    env.Append(LINKFLAGS = '-rdynamic -lfreetype -lz /usr/lib/x86_64-linux-gnu/libvtkDomainsChemistry-6.3.so.6.3.0 -lexpat /usr/lib/x86_64-linux-gnu/libvtkFiltersGeneric-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersHyperTree-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallelFlowPaths-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallelGeometry-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallelImaging-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallelMPI-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallelStatistics-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersProgrammable-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersPython-6.3.so.6.3.0 -lpython2.7 /usr/lib/libvtkWrappingTools-6.3.a /usr/lib/x86_64-linux-gnu/libvtkFiltersReebGraph-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersSMP-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersSelection-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersVerdict-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkverdict-6.3.so.6.3.0 -ljpeg -lpng -ltiff /usr/lib/x86_64-linux-gnu/libvtkGUISupportQtOpenGL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkGUISupportQtSQL-6.3.so.6.3.0 -lsqlite3 /usr/lib/x86_64-linux-gnu/libvtkGUISupportQtWebkit-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkViewsQt-6.3.so.6.3.0 -lproj /usr/lib/x86_64-linux-gnu/libvtkIOAMR-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/hdf5/openmpi/libhdf5.so -lsz -ldl -lm /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so /usr/lib/x86_64-linux-gnu/libvtkIOEnSight-6.3.so.6.3.0 -lnetcdf_c++ -lnetcdf /usr/lib/x86_64-linux-gnu/libvtkIOExport-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingGL2PS-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingContextOpenGL-6.3.so.6.3.0 -lgl2ps /usr/lib/x86_64-linux-gnu/libvtkIOFFMPEG-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOMovie-6.3.so.6.3.0 -ltheoraenc -ltheoradec -logg /usr/lib/x86_64-linux-gnu/libvtkIOGDAL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOGeoJSON-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOImport-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOInfovis-6.3.so.6.3.0 -lxml2 /usr/lib/x86_64-linux-gnu/libvtkIOMINC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOMPIImage-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOMPIParallel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOParallel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIONetCDF-6.3.so.6.3.0 -ljsoncpp /usr/lib/x86_64-linux-gnu/libvtkIOMySQL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOODBC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOPLY-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOParallelExodus-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOParallelLSDyna-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOParallelNetCDF-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOParallelXML-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOPostgreSQL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOVPIC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkVPIC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOVideo-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOXdmf2-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkxdmf2-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingMath-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingMorphological-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingStatistics-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingStencil-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInfovisBoostGraphAlgorithms-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInteractionImage-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkLocalExample-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkParallelMPI4Py-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingExternal-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingFreeTypeFontConfig-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingImage-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingLOD-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingMatplotlib-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingParallel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingParallelLIC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingQt-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingVolumeAMR-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingVolumeOpenGL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkTestingGenericBridge-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkTestingIOSQL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkTestingRendering-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkViewsContext2D-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkViewsGeovis-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkWrappingJava-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersFlowPaths-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOExodus-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkexoIIc-6.3.so.6.3.0 -lnetcdf_c++ -lnetcdf /usr/lib/x86_64-linux-gnu/libvtkIOLSDyna-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/hdf5/openmpi/libhdf5.so -lsz -ldl -lm /usr/lib/x86_64-linux-gnu/openmpi/lib/libmpi.so -lxml2 /usr/lib/x86_64-linux-gnu/libvtkWrappingPython27Core-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkPythonInterpreter-6.3.so.6.3.0 -lpython2.7 /usr/lib/x86_64-linux-gnu/libvtkFiltersParallel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkParallelMPI-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingLIC-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersTexture-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkGUISupportQt-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libQt5Widgets.so.5.7.1 /usr/lib/x86_64-linux-gnu/libQt5Gui.so.5.7.1 /usr/lib/x86_64-linux-gnu/libQt5Core.so.5.7.1 /usr/lib/x86_64-linux-gnu/libvtkFiltersAMR-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkParallelCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOLegacy-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingOpenGL-6.3.so.6.3.0 -lGLU -lSM -lICE -lX11 -lXext -lXt /usr/lib/x86_64-linux-gnu/libvtkIOSQL-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkViewsInfovis-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkChartsCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingContext2D-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersImaging-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingLabel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkGeovisCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOXML-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOGeometry-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOXMLParser-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInfovisLayout-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInfovisCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkViewsCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInteractionWidgets-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersHybrid-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingGeneral-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingSources-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersModeling-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkInteractionStyle-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingHybrid-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOImage-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkDICOMParser-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkIOCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkmetaio-6.3.so.6.3.0 -lz /usr/lib/x86_64-linux-gnu/libvtkRenderingAnnotation-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingFreeType-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkftgl-6.3.so.6.3.0 -lfreetype -lGL /usr/lib/x86_64-linux-gnu/libvtkImagingColor-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingVolume-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkRenderingCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonColor-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersExtraction-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersStatistics-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingFourier-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkImagingCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkalglib-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersGeometry-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersSources-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersGeneral-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkFiltersCore-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonExecutionModel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonComputationalGeometry-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonDataModel-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonMisc-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonTransforms-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonMath-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtkCommonSystem-6.3.so.6.3.0 /usr/lib/x86_64-linux-gnu/libvtksys-6.3.so.6.3.0 -ldl -lproj /usr/lib/x86_64-linux-gnu/libvtkCommonCore-6.3.so.6.3.0')
+
+# required for vtk visualization
+if ARGUMENTS.get('vtk', 0):
+   env.Append(CCFLAGS = '-D__VTK__')
+   env.Append(CCFLAGS = '-DvtkFiltersFlowPaths_AUTOINIT="1(vtkFiltersParallelFlowPaths)" -DvtkIOExodus_AUTOINIT="1(vtkIOParallelExodus)" -DvtkIOGeometry_AUTOINIT="1(vtkIOMPIParallel)" -DvtkIOImage_AUTOINIT="1(vtkIOMPIImage)" -DvtkIOParallel_AUTOINIT="1(vtkIOMPIParallel)" -DvtkIOSQL_AUTOINIT="2(vtkIOMySQL,vtkIOPostgreSQL)" -DvtkRenderingContext2D_AUTOINIT="1(vtkRenderingContextOpenGL)" -DvtkRenderingCore_AUTOINIT="3(vtkInteractionStyle,vtkRenderingFreeType,vtkRenderingOpenGL)" -DvtkRenderingFreeType_AUTOINIT="2(vtkRenderingFreeTypeFontConfig,vtkRenderingMatplotlib)" -DvtkRenderingLIC_AUTOINIT="1(vtkRenderingParallelLIC)" -DvtkRenderingVolume_AUTOINIT="1(vtkRenderingVolumeOpenGL)"')
+   env.Append(CCFLAGS = '-I/usr/include/vtk-6.3 -I/usr/include/freetype2 -I/usr/include/x86_64-linux-gnu/freetype2 -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent -I/usr/lib/openmpi/include/openmpi/opal/mca/event/libevent2021/libevent/include -I/usr/lib/openmpi/include -I/usr/lib/openmpi/include/openmpi -I/usr/include/python2.7 -I/usr/include/x86_64-linux-gnu -I/usr/include/hdf5/openmpi -I/usr/include/libxml2 -I/usr/include/jsoncpp -I/usr/include/tcl')
+   env.Append(CCFLAgs = '-w') # disable warnings when using vtk
+
+# required for spdlog async mode
+#env.Append(LINKFLAGS = '-lpthread')
+
+if ARGUMENTS.get('debug', 0):
+   env.Append(CCFLAGS = '-g')
+
+if ARGUMENTS.get('pedantic', 0):
+   env.Append(CCFLAGS = '-Wall -pedantic')
+
+# set optimization level
+if ARGUMENTS.get('optimize', 0):
+   env.Append(CCFLAGS = '-O'+ARGUMENTS.get('optimize'))
+else:
+   env.Append(CCFLAGS = '-O3')
+
+##################################################################
+   
+# store object files in separate build directory
+env['OBJPREFIX']='build/'
+env['CPPPATH']=['.']
+
+lib_sources = []
+
+# HD: generate linker command with $_LIBFLAGS encapsulated in --start-group and --end-group
+#     for multi-pass linking
+if env['PLATFORM'] != 'darwin':
+   env['LINKCOM'] = '$LINK -o $TARGET $__RPATH $SOURCES $_LIBDIRFLAGS -Wl,--start-group $LINKFLAGS -Wl,--end-group'
+else:
+   env['LINKCOM'] = '$LINK -o $TARGET $_LIBFLAGS $LINKFLAGS $__RPATH $SOURCES'
+
+if 'doc' in COMMAND_LINE_TARGETS:
+   p =subprocess.Popen(["doxygen","Doxyfile"])
+else:
+   SConscript('app/SConscript', ['env','lib_sources'])
+
+
+# Local variables:
+# mode: python
+# indent-tabs-mode: nil
+# tab-width: 4
+# End:
+# vim:noexpandtab:sw=4:ts=4:

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<config>
+  <!---  -->
+  <material>
+    <name>String</name>
+    <c11>Double</c11>
+    <c12>Double</c12>
+    <c44>Double</c44>
+    <lattice-constant>Double</lattice-constant>
+    <cation>
+      <element>String</element>
+      <share>Double</share>
+    </cation>
+    <cation>
+      <element>String</element>
+      <share>Double</share>
+    </cation>
+    <anion>
+      <element>String</element>
+      <share>Double</share>
+    </anion>
+    <anion>
+      <element>String</element>
+      <share>Double</share>
+    </anion>
+    <anion>
+      <element>String</element>
+      <share>Double</share>
+    </anion>
+  </material>
+  <!---  -->
+  <material-file>Path</material-file>
+  <material-name>String</material-name>
+  <!---  -->
+  <size>
+    <dimension1>Int</dimension1>
+    <dimension2>Int</dimension2>
+    <dimension3>Int</dimension3>
+  </size>
+  <growth-dimension>Int</growth-dimension>
+  <!---  -->
+  <input>Path</input>
+  <output>Path</output>
+  <periodic-table>Path</periodic-table>
+  <log>Path</log>
+  <tersoff>Path</tersoff>
+  <xyz>Path</xyz>
+  <output-preamble>Path</output-preamble>
+  <journal-preamble>Path</journal-preamble>
+  <!---  -->
+  <neighbour-radius>Double</neighbour-radius>
+  <neighbor-layers>Int</neighbor-layers>
+  <start-index>Int</start-index>
+  <stop-index>Int</stop-index>
+  <mmc-probability>Double</mmc-probability>
+  <min-displacement>Double</min-displacement>
+  <max-displacement>Double</max-displacement>
+  <scaling-probability>Double</scaling-probability>
+  <min-scaling>Double</min-scaling>
+  <max-scaling>Double</max-scaling>
+  <runs>Int</runs>
+  <check-runs>Int</check-runs>
+  <energy-drop>Double</energy-drop>
+  <reduction>Double</reduction>
+  <min-energy>Double</min-energy>
+  <!---  -->
+  <interface-atoms>Int</interface-atoms>
+  <interface-positions>Int</interface-positions>
+  <!---  -->
+  <ref-lattice-const>Double</ref-lattice-const>
+  <temperature>Double</temperature>
+  <!---  -->
+  <switch>extend</switch>
+  <switch>calc-energy</switch>
+  <switch>quiet</switch>
+  <switch>verbose</switch>
+  <switch>print-statistics</switch>
+  <switch>render-bonds</switch>
+  <switch>visualize-bond-strain</switch>
+  <switch>static-optimization</switch>
+  <switch>dynamic-optimization</switch>
+</config>
+
+<!--- Local variables: -->
+<!--- mode: xml -->
+<!--- indent-tabs-mode: nil -->
+<!--- tab-width: 4 -->
+<!--- End: -->
+<!--- vim:noexpandtab:sw=4:ts=4: -->

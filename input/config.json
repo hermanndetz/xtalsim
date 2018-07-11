@@ -1,0 +1,88 @@
+{
+    "config" :
+    {
+	"material" : 
+	{
+	    "name" : "name",
+	    "c11" : 1.1,
+	    "c12" : 2.2,
+	    "c44" : 3.3,
+	    "lattice-constant" : 4.4,
+	    "cations" :
+	    [
+		{
+		    "element" : "element1",
+		    "share" : 5.5
+		},
+		{
+		    "element" : "element2",
+		    "share" : 6.6
+		}
+	    ],
+	    "anions" :
+	    [
+		{
+		    "element" : "element3",
+		    "share" : 7.7
+		},
+		{
+		    "element" : "element4",
+		    "share" : 8.8
+		},
+		{
+		    "element" : "element5",
+		    "share" : 9.9
+		}	    
+	    ]
+	},
+	"material-file" : "matFile",
+	"material-name" : "matName",
+	//------------------------
+	"size" : [10, 11, 12],
+	"growth-dimension" : 13,
+	//------------------------
+	"input" : "inPath",
+	"output" : "outPath",
+	"periodic-table" : "perPath",
+	"log" : "logPath",
+	"tersoff" : "tersoffPath",
+	"xyz" : "xyzPath",
+	"strain-preamble" : "strainPath",
+	"journal-preamble" : "journalPath",
+	//------------------------
+	"neighbor-radius" : 14.14,
+	"neighbor-layers" : 15,
+	"start-index" : 16,
+	"stop-index" : 17,
+	"mmc-probability" : 18.18,
+	"min-displacement" : 19.19,
+	"max-displacement" : 20.20,
+	"scaling-probability" : 21.21,
+	"min-scaling" : 22.22,
+	"max-scaling" : 23.23,
+	"runs" : 24,
+	"check-runs" : 25,
+	"energy-drop" : 26.26,
+	"reduction" : 27.27,
+	"min-energy" : 28.28,
+	//------------------------
+	"interface-atoms" : 29,
+	"interface-positions" : 30,
+	//------------------------
+	"ref-lattice-const" : 31.31,
+	"temperature" : 32.32,
+	//------------------------
+	"switches" :
+	[
+	    "extend",
+	    "calc-energy",
+	    //"quiet",
+	    "verbose",
+	    "print-statistics",
+	    "render-bonds",
+	    "visualize-bond-strain",
+	    "static-optimization",
+	    "dynamic-optimization"
+	]
+    }
+}

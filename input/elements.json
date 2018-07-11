@@ -1,0 +1,247 @@
+{
+	"periodic_table" : 
+	[
+		{
+			"color" : "#72a0c1",
+			"group" : 1,
+			"mass" : 1.01,
+			"name" : "Hydrogen",
+			"neutron" : 1,
+			"period" : 1,
+			"proton" : 1,
+			"symbol" : "H",
+			"weight" : 1.1799999999999999
+		},
+		{
+			"color" : "#72a0c1",
+			"group" : 1,
+			"mass" : 6.9400000000000004,
+			"name" : "Lithium",
+			"neutron" : 4,
+			"period" : 2,
+			"proton" : 3,
+			"symbol" : "Li",
+			"weight" : 6.9400000000000004
+		},
+		{
+			"color" : "#c46210",
+			"group" : 3,
+			"mass" : 0.0,
+			"name" : "Boron",
+			"neutron" : 6,
+			"period" : 2,
+			"proton" : 5,
+			"symbol" : "B",
+			"weight" : 10.81
+		},
+		{
+			"color" : "#c46210",
+			"group" : 4,
+			"mass" : 0.0,
+			"name" : "Carbon",
+			"neutron" : 6,
+			"period" : 2,
+			"proton" : 6,
+			"symbol" : "C",
+			"weight" : 12.010999999999999
+		},
+		{
+			"color" : "#ffbf00",
+			"group" : 5,
+			"mass" : 0.0,
+			"name" : "Nitrogen",
+			"neutron" : 7,
+			"period" : 2,
+			"proton" : 7,
+			"symbol" : "N",
+			"weight" : 14.007
+		},
+		{
+			"color" : "#72a0c1",
+			"group" : 2,
+			"mass" : 0.0,
+			"name" : "Magnesium",
+			"neutron" : 12,
+			"period" : 3,
+			"proton" : 12,
+			"symbol" : "Mg",
+			"weight" : 24.305
+		},
+		{
+			"color" : "#e0f3f8",
+			"group" : 3,
+			"mass" : 0.0,
+			"name" : "Aluminum",
+			"neutron" : 14,
+			"period" : 3,
+			"proton" : 13,
+			"symbol" : "Al",
+			"weight" : 26.981000000000002
+		},
+		{
+			"color" : "#5d5d65",
+			"group" : 4,
+			"mass" : 0.0,
+			"name" : "Silicon",
+			"neutron" : 14,
+			"period" : 3,
+			"proton" : 14,
+			"symbol" : "Si",
+			"weight" : 28.085000000000001
+		},
+		{
+			"color" : "#fee090",
+			"group" : 5,
+			"mass" : 0.0,
+			"name" : "Phosporous",
+			"neutron" : 16,
+			"period" : 3,
+			"proton" : 15,
+			"symbol" : "P",
+			"weight" : 30.974
+		},
+		{
+			"color" : "#fee090",
+			"group" : 4,
+			"mass" : 0.0,
+			"name" : "Titanium",
+			"neutron" : 26,
+			"period" : 4,
+			"proton" : 22,
+			"symbol" : "Ti",
+			"weight" : 47.866999999999997
+		},
+		{
+			"color" : "#fee090",
+			"group" : 7,
+			"mass" : 0.0,
+			"name" : "Manganese",
+			"neutron" : 30,
+			"period" : 4,
+			"proton" : 25,
+			"symbol" : "Mn",
+			"weight" : 54.938043999999998
+		},
+		{
+			"color" : "#fee090",
+			"group" : 9,
+			"mass" : 0.0,
+			"name" : "Cobalt",
+			"neutron" : 22,
+			"period" : 4,
+			"proton" : 27,
+			"symbol" : "Co",
+			"weight" : 58.933194
+		},
+		{
+			"color" : "#fee090",
+			"group" : 11,
+			"mass" : 0.0,
+			"name" : "Copper",
+			"neutron" : 34,
+			"period" : 4,
+			"proton" : 29,
+			"symbol" : "Cu",
+			"weight" : 64.546000000000006
+		},
+		{
+			"color" : "#91bfdb",
+			"group" : 3,
+			"mass" : 0.0,
+			"name" : "Gallium",
+			"neutron" : 38,
+			"period" : 4,
+			"proton" : 31,
+			"symbol" : "Ga",
+			"weight" : 69.722999999999999
+		},
+		{
+			"color" : "#996515",
+			"group" : 4,
+			"mass" : 0.0,
+			"name" : "Germanium",
+			"neutron" : 42,
+			"period" : 4,
+			"proton" : 32,
+			"symbol" : "Ge",
+			"weight" : 72.630799999999994
+		},
+		{
+			"color" : "#fc8d59",
+			"group" : 5,
+			"mass" : 0.0,
+			"name" : "Arsenic",
+			"neutron" : 42,
+			"period" : 4,
+			"proton" : 33,
+			"symbol" : "As",
+			"weight" : 74.921599999999998
+		},
+		{
+			"color" : "#fc8d59",
+			"group" : 11,
+			"mass" : 0.0,
+			"name" : "Silver",
+			"neutron" : 60,
+			"period" : 5,
+			"proton" : 47,
+			"symbol" : "Ag",
+			"weight" : 107.8682
+		},
+		{
+			"color" : "#4575b4",
+			"group" : 3,
+			"mass" : 0.0,
+			"name" : "Indium",
+			"neutron" : 66,
+			"period" : 5,
+			"proton" : 49,
+			"symbol" : "In",
+			"weight" : 114.818
+		},
+		{
+			"color" : "#4575b4",
+			"group" : 4,
+			"mass" : 0.0,
+			"name" : "Tin",
+			"neutron" : 70,
+			"period" : 5,
+			"proton" : 50,
+			"symbol" : "Sn",
+			"weight" : 118.70999999999999
+		},
+		{
+			"color" : "#d73027",
+			"group" : 5,
+			"mass" : 0.0,
+			"name" : "Antimony",
+			"neutron" : 70,
+			"period" : 5,
+			"proton" : 51,
+			"symbol" : "Sb",
+			"weight" : 121.76000000000001
+		},
+		{
+			"color" : "#d73027",
+			"group" : 0,
+			"mass" : 0.0,
+			"name" : "Lutetium",
+			"neutron" : 104,
+			"period" : 6,
+			"proton" : 71,
+			"symbol" : "Lu",
+			"weight" : 174.96680000000001
+		},
+		{
+			"color" : "#d73027",
+			"group" : 11,
+			"mass" : 0.0,
+			"name" : "Gold",
+			"neutron" : 118,
+			"period" : 6,
+			"proton" : 79,
+			"symbol" : "Au",
+			"weight" : 196.96656899999999
+		}
+	]
+}

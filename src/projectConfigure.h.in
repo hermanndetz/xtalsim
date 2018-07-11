@@ -1,0 +1,7 @@
+
+#ifndef __PROJECT_CONFIGURE_H__
+#define __PROJECT_CONFIGURE_H__
+
+#cmakedefine __VTK__
+
+#endif

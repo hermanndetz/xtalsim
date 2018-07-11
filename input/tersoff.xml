@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<tersoff>
+    <global>
+        <!-- Change only, if you know, what you're doing!
+            nearest neighbor distances:
+            GaAs:   2.448
+            InP:    2.546
+            InAs:   2.623
+            InSb:   2.805
+        -->
+        <Rcut>2.95</Rcut>
+        <RcutConventional>3.4273</RcutConventional>
+        <DD>0.15</DD>
+    </global>
+    <potential>
+        <name>GaAs Powell Thesis</name>
+	<element1>Ga</element1>
+        <proton1>31</proton1>
+        <neutron1>38</neutron1>
+	<element2>As</element2>
+        <proton2>33</proton2>
+	<neutron2>42</neutron2>
+        <mode>S</mode>
+        <gamma>0.363585</gamma>
+        <S>1.60228</S>
+        <beta>1.56295</beta>
+        <delta>1.0</delta>
+        <D0>2.12673</D0>
+        <R0>2.35218</R0>
+        <C>1.20595</C>
+        <D>0.800338</D>
+        <H>-0.442817</H>
+        <N>5.43647</N>
+        <Rcut>3.5</Rcut>
+        <DD>0.1</DD>
+        <lambda>1.83057</lambda>
+    </potential>
+    <potential>
+      <name>InAs Powell Thesis</name>
+      	<element1>As</element1>
+        <proton1>33</proton1>
+	<neutron1>42</neutron1>
+	<element1>In</element1>
+        <proton2>49</proton2>
+	<neutron2>66</neutron2>
+        <mode>S</mode>
+        <gamma>0.379623</gamma>
+        <S>1.47058</S>
+        <beta>1.49807</beta>
+        <delta>1.0</delta>
+        <D0>2.13123</D0>
+        <R0>2.49936</R0>
+        <C>1.00904</C>
+        <D>0.82355</D>
+        <H>-0.462045</H>
+        <N>7.03876</N>
+        <Rcut>3.7</Rcut>
+        <DD>0.1</DD>
+        <lambda>1.4331</lambda>
+    </potential>
+    <potential>
+        <name>GaSb Powell Thesis</name>
+	<element1>Ga</element1>
+        <proton1>31</proton1>
+        <neutron1>38</neutron1>
+	<element2>Sb</element2>
+        <proton2>51</proton2>
+	<neutron2>70</neutron2>
+        <mode>S</mode>
+        <gamma>0.36953</gamma>
+        <S>1.41256</S>
+        <beta>1.47705</beta>
+        <delta>1.0</delta>
+        <D0>2.17013</D0>
+        <R0>2.48549</R0>
+        <C>1.17945</C>
+        <D>0.842774</D>
+        <H>-0.429907</H>
+        <N>4.61625</N>
+        <Rcut>3.5</Rcut>
+        <DD>0.1</DD>
+        <lambda>1.8244</lambda>
+    </potential>
+    <potential>
+        <name>InSb Powell Thesis</name>
+	<element1>In</element1>
+        <proton1>49</proton1>
+	<neutron1>66</neutron1>
+	<element2>Sb</element2>
+        <proton2>51</proton2>
+	<neutron2>70</neutron2>
+        <mode>S</mode>
+        <gamma>0.386354</gamma>
+        <S>1.40689</S>
+        <beta>1.43604</beta>
+        <delta>1.0</delta>
+        <D0>2.1872</D0>
+        <R0>2.62026</R0>
+        <C>1.21528</C>
+        <D>0.90126</D>
+        <H>-0.443878</H>
+        <N>4.49087</N>
+        <Rcut>3.7</Rcut>
+        <DD>0.1</DD>
+        <lambda>1.75633</lambda>
+    </potential>
+    <potential>
+        <name>BAs Benkabou PLA</name>
+	<element1>B</element1>
+        <proton1>5</proton1>
+	<neutron1>6</neutron1>
+	<element2>As</element2>
+        <proton2>33</proton2>
+	<neutron2>42</neutron2>
+        <mode>A</mode>
+        <beta>1.10e-6</beta>
+        <gamma>1.0</gamma>
+        <A>3469.0</A>
+        <B>320.0</B>
+        <lambda>3.10</lambda>
+        <mu>1.6</mu>
+        <N>0.72</N>
+        <C>100390.0</C>
+        <D>16.217</D>
+        <H>-0.59825</H>
+        <Rcut>2.395</Rcut>
+        <DD>0.15</DD>
+    </potential>
+</tersoff>
+
+
+<!--- Local variables: -->
+<!--- mode: xml -->
+<!--- indent-tabs-mode: nil -->
+<!--- tab-width: 4 -->
+<!--- End: -->
+<!--- vim:noexpandtab:sw=4:ts=4: -->

@@ -1,0 +1,453 @@
+{
+	"material-collection" : 
+	[
+		{
+			"anions" : 
+			[
+				{
+					"element" : "As",
+					"neutron" : 42,
+					"proton" : 33,
+					"share" : 1.0
+				}
+			],
+			"c11" : 119.0,
+			"c12" : 53.399999999999999,
+			"c44" : 59.600000000000001,
+			"cations" : 
+			[
+				{
+					"element" : "Ga",
+					"neutron" : 38,
+					"proton" : 31,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 5.6535000000000002,
+			"name" : "GaAs"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "As",
+					"neutron" : 42,
+					"proton" : 33,
+					"share" : 1.0
+				}
+			],
+			"c11" : 83.400000000000006,
+			"c12" : 45.399999999999999,
+			"c44" : 39.5,
+			"cations" : 
+			[
+				{
+					"element" : "In",
+					"neutron" : 66,
+					"proton" : 49,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 6.0583,
+			"name" : "InAs"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 1.0
+				}
+			],
+			"c11" : 66.700000000000003,
+			"c12" : 36.5,
+			"c44" : 30.199999999999999,
+			"cations" : 
+			[
+				{
+					"element" : "In",
+					"neutron" : 66,
+					"proton" : 49,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 6.4790000000000001,
+			"name" : "InSb"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "As",
+					"neutron" : 42,
+					"proton" : 33,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.2204999999999999,
+			"c12" : 0.62090000000000001,
+			"c44" : 0.6381,
+			"cations" : 
+			[
+				{
+					"element" : "Al",
+					"neutron" : 14,
+					"proton" : 13,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 5.6611000000000002,
+			"name" : "AlAs"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 1.0
+				}
+			],
+			"c11" : 87.799999999999997,
+			"c12" : 43.5,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Al",
+					"neutron" : 14,
+					"proton" : 13,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 6.1349999999999998,
+			"name" : "AlSb"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 1.0
+				}
+			],
+			"c11" : 88.299999999999997,
+			"c12" : 40.200000000000003,
+			"c44" : 43.200000000000003,
+			"cations" : 
+			[
+				{
+					"element" : "Ga",
+					"neutron" : 38,
+					"proton" : 31,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 6.0959300000000001,
+			"name" : "GaSb"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "N",
+					"neutron" : 7,
+					"proton" : 7,
+					"share" : 1.0
+				}
+			],
+			"c11" : 0.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Ga",
+					"neutron" : 38,
+					"proton" : 31,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 4.5199999999999996,
+			"name" : "GaN"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "P",
+					"neutron" : 16,
+					"proton" : 15,
+					"share" : 1.0
+				}
+			],
+			"c11" : 0.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "In",
+					"neutron" : 66,
+					"proton" : 49,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 5.8686999999999996,
+			"name" : "InP"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "N",
+					"neutron" : 7,
+					"proton" : 7,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Mg",
+					"neutron" : 12,
+					"proton" : 12,
+					"share" : 0.5
+				},
+				{
+					"element" : "Li",
+					"neutron" : 4,
+					"proton" : 3,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 4.9100000000000001,
+			"name" : "LiMgN"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Si",
+					"neutron" : 14,
+					"proton" : 14,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Al",
+					"neutron" : 14,
+					"proton" : 13,
+					"share" : 0.5
+				},
+				{
+					"element" : "Li",
+					"neutron" : 4,
+					"proton" : 3,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 5.9279999999999999,
+			"name" : "LiAlSi"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "As",
+					"neutron" : 42,
+					"proton" : 33,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Ag",
+					"neutron" : 60,
+					"proton" : 47,
+					"share" : 0.5
+				},
+				{
+					"element" : "Mg",
+					"neutron" : 12,
+					"proton" : 12,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 6.21,
+			"name" : "MgAgAs"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Cu",
+					"neutron" : 34,
+					"proton" : 29,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 0.5
+				},
+				{
+					"element" : "Mg",
+					"neutron" : 12,
+					"proton" : 12,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 6.1680000000000001,
+			"name" : "MgCuSb"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Co",
+					"neutron" : 22,
+					"proton" : 27,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 0.5
+				},
+				{
+					"element" : "Ti",
+					"neutron" : 26,
+					"proton" : 22,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 5.8840000000000003,
+			"name" : "TiCoSb"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Au",
+					"neutron" : 118,
+					"proton" : 79,
+					"share" : 1.0
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Sn",
+					"neutron" : 70,
+					"proton" : 50,
+					"share" : 0.5
+				},
+				{
+					"element" : "Lu",
+					"neutron" : 104,
+					"proton" : 71,
+					"share" : 0.5
+				}
+			],
+			"lattice-constant" : 6.5651999999999999,
+			"name" : "LuAuSn"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "Mn",
+					"neutron" : 30,
+					"proton" : 25,
+					"share" : 0.5
+				},
+				{
+					"element" : "Al",
+					"neutron" : 14,
+					"proton" : 13,
+					"share" : 0.5
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "Cu",
+					"neutron" : 34,
+					"proton" : 29,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 1.0,
+			"name" : "Cu2MnAl"
+		},
+		{
+			"anions" : 
+			[
+				{
+					"element" : "As",
+					"neutron" : 42,
+					"proton" : 33,
+					"share" : 0.5
+				},
+				{
+					"element" : "Sb",
+					"neutron" : 70,
+					"proton" : 51,
+					"share" : 0.5
+				}
+			],
+			"c11" : 1.0,
+			"c12" : 0.0,
+			"c44" : 0.0,
+			"cations" : 
+			[
+				{
+					"element" : "In",
+					"neutron" : 66,
+					"proton" : 49,
+					"share" : 1.0
+				}
+			],
+			"lattice-constant" : 7.0,
+			"name" : "InAsSb"
+		}
+	]
+}

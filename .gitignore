@@ -1,0 +1,22 @@
+# ignore all files without extension, has to be done in the following way:
+# 1) ignore all files
+#*
+# 2) unignore directories
+#!/*
+# 3) unignore files with extension
+#!*.*
+# ATTENTION: on the internet i read about problems with deeper directory structure
+# I have not experienced them but be aware of that
+
+# ignore all files starting with '.' except .gitignore
+.*
+!.gitignore
+
+*.o
+*~
+
+build/*
+bin/*
+doc/*
+work/*
+

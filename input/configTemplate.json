@@ -1,0 +1,85 @@
+{
+    "name" : "String",
+    "c11" : Double,
+    "c12" : Double,
+    "c44" : Double,
+    "lattice-constant" : Double,
+    "material" : 
+    {
+	"cations" :
+	[
+	    {
+		"element" : "String",
+		"share" : Double
+	    },
+	    {
+		"element" : "String",
+		"share" : Double
+	    }
+	],
+	"anions" :
+	[
+	    {
+		"element" : "String",
+		"share" : Double
+	    },
+	    {
+		"element" : "String",
+		"share" : Double
+	    },
+	    {
+		"element" : "String",
+		"share" : Double
+	    }	    
+	]
+    }
+    "material-file" : "String",
+    "material-name" : "String",
+    //------------------------
+    "size" : [Int, Int, Int],
+    "growth-dimension" : Int,
+    //------------------------
+    "input" : "Path",
+    "output" : "Path",
+    "periodic-table" : "Path",
+    "log" : "Path",
+    "tersoff" : "Path",
+    "xyz" : "Path",
+    "strain-preamble" : "Path",
+    "journal-preamble" : "Path",
+    //------------------------
+    "neighbour-radius" : Double,
+    "neighbour-layers" : Int,
+    "start-index" : Int,
+    "stop-index" : Int,
+    "mmc-probability" : Double,
+    "min-displacement" : Double,
+    "max-displacement" : Double,
+    "scaling-probability" : Double,
+    "min-scaling" : Double,
+    "max-scaling" : Double,
+    "runs" : Int,
+    "check-runs" : Int,
+    "energy-drop" : Double,
+    "reduction" : Double,
+    "min-energy" : Double,
+    //------------------------
+    "interface-atoms" : Int,
+    "interface-positions" : Int,
+    //------------------------
+    "ref-lattice-const" : Double,
+    "temperature" : Double,
+    //------------------------
+    "switches" :
+    [
+	"extend",
+	"calc-energy",
+	"quiet",
+	"verbose",
+	"print-statistics",
+	"render-bonds",
+	"visualize-bond-strain",
+	"static-optimization",
+	"dynamic-optimization"
+    ]
+}

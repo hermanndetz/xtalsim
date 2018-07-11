@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<config>
+  <material-file>../input/materials.xml</material-file>
+  <material-name>GaSb</material-name>
+  <start-index>8</start-index>
+  <stop-index>14</stop-index>
+  <max-displacement>3e-2</max-displacement>
+  <runs>5</runs>
+  <interface-atoms>32</interface-atoms>
+  <interface-positions>10</interface-positions>
+  <periodic-table>../input/elements.xml</periodic-table>
+  <input>../data/InAs_GaSb/lattice.xml</input>
+  <output>../data/InAs_GaSb/interface.xml</output>
+  <log>../data/InAs_GaSb/interface.log</log>
+  <tersoff>../input/tersoff.xml</tersoff>
+  <journal-preamble>../data/InAs_GaSb/journal/</journal-preamble>
+  <neighbor-layers>1</neighbor-layers>
+  <xyz>../data/InAs_GaSb/interface</xyz>
+  <!--switch>verbose</switch-->
+</config>
+
+<!--- Local variables: -->
+<!--- mode: xml -->
+<!--- indent-tabs-mode: nil -->
+<!--- tab-width: 4 -->
+<!--- End: -->
+<!--- vim:noexpandtab:sw=4:ts=4: -->
