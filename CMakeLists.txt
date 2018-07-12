@@ -49,8 +49,8 @@ if (NOT ${DOXYGEN_BIN} MATCHES DOXYGEN_BIN-NOTFOUND)
   set (DOXYGEN_EXAMPLE_PATH
         "${CMAKE_SOURCE_DIR}/src/doc")
   configure_file(
-    ${CMAKE_SOURCE_DIR}/Doxyfile.in
-    ${PROJECT_BINARY_DIR}/Doxyfile)
+    ${CMAKE_SOURCE_DIR}/src/doc/Doxyfile.in
+    ${CMAKE_SOURCE_DIR}/src/doc/Doxyfile)
   add_custom_target ( doc
     ${DOXYGEN_BIN} ${PROJECT_BINARY_DIR}/Doxyfile
     DEPENDS ${PROJECT_BINARY_DIR}/Doxyfile
