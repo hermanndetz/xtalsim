@@ -29,7 +29,7 @@
     </anion>
   </material>
   <!---  -->
-  <material-file>matFile</material-file>
+  <material-file>../input/materials.xml</material-file>
   <material-name>matName</material-name>
   <!---  -->
   <size>
@@ -41,9 +41,9 @@
   <!---  -->
   <input>inPath</input>
   <output>outPath</output>
-  <periodic-table>perPath</periodic-table>
+  <periodic-table>../input/elements.xml</periodic-table>
   <log>logPath</log>
-  <tersoff>tersoffPath</tersoff>
+  <tersoff>../input/tersoff.xml</tersoff>
   <xyz>xyzPath</xyz>
   <output-preamble>outPath</output-preamble>
   <journal-preamble>journalPath</journal-preamble>
