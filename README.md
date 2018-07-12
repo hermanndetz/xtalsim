@@ -4,7 +4,7 @@ Open source suite to simulate III-V semiconductor structures on an atomic scale
 
 In a nutshell it internally creates the desired atomic lattice and enables several manipulations such as automatic creation of energetical optimal interface roughnesses or relaxation. In addition several ways to evaluate and properly display the achieved results are provided.
 
-_Features at a glance:_
+__Features at a glance:__
 
 * creation of atomic lattices with configurable amount of layers, materials
 and thicknesses
@@ -50,11 +50,12 @@ make docs # optional, requires doxygen
 
 ## Getting started
 
+The [wiki](https://github.com/hermanndetz/xtalsim/wiki) provides example simulations as well as a detailed description of the individual programs and file formats.
+
 ## Publications
 
 You can find a list of publications related to xtalsim (or one of its pre-versions) [here](https://github.com/hermanndetz/xtalsim/wiki/publications).
 
 ## Acknowledgements
 
-
-Development of the initial version of xtalsim by Hermann Detz and Juergen Maier was funded by the Austrian Science Fund (FWF): P26100-N27.
+Development of the initial version of xtalsim by Hermann Detz and Juergen Maier at TU Wien was funded by the Austrian Science Fund (FWF): P26100-N27 and through an APART Fellowship of the Austrian Academy of Sciences.
