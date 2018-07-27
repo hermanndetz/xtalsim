@@ -192,7 +192,7 @@ void SimulationBox::createHalfHeusler(const Vector3D<indexType> layerCounts,
                           << "layers of half Heusler lattice for material "
                           << material.getName();
 
-    if (material.getCations().size() < 2){
+    if (material.getCations().size() < 2) {
         CLOG(ERROR, logName_) << "At least two cations have to be "
                               << "specified! ABORTING";
         return;
@@ -223,7 +223,7 @@ void SimulationBox::createFullHeusler(const Vector3D<indexType> layerCounts,
 			  << "layers of half Heusler lattice for material "
 			  << material.getName();
 
-    if (material.getAnions().size() < 2){
+    if (material.getAnions().size() < 2) {
         CLOG(ERROR, logName_) << "At least two cations have to be "
                               << "specified! ABORTING";
         return;
@@ -259,7 +259,7 @@ void SimulationBox::createLattice(const Vector3D<indexType> layerCounts,
 
     std::vector<Lattice::Layer> layerTypes;
     
-    switch(latticeType){
+    switch (latticeType) {
     case Lattice::Type::Zincblende:
         layerTypes.push_back(Lattice::Layer::CationRegular);
         layerTypes.push_back(Lattice::Layer::AnionRegular);
@@ -278,11 +278,10 @@ void SimulationBox::createLattice(const Vector3D<indexType> layerCounts,
         break;
     }
 
-    if (inPlaneLatticeConstant_ < 0.0){
+    if (inPlaneLatticeConstant_ < 0.0) {
         inPlaneLatticeConstant_ = material.getLatticeConstant();
         atomPitchOutOfPlane = inPlaneLatticeConstant_ /4.0;
-    }
-    else{
+    } else {
         atomPitchOutOfPlane =
             material.getLatticeConstant(inPlaneLatticeConstant_)/4.0;
     }
@@ -295,7 +294,7 @@ void SimulationBox::createLattice(const Vector3D<indexType> layerCounts,
     size = lattice_.getSize();
 
     // If lattice was empty before creation.
-    if ( ! ( (size_[inPlaneDimension1]+size_[inPlaneDimension2]) > 0 ) ){
+    if ( !((size_[inPlaneDimension1]+size_[inPlaneDimension2]) > 0)) {
 	
         size_[inPlaneDimension1] = size[inPlaneDimension1]* atomPitchInPlane;
         size_[inPlaneDimension2] = size[inPlaneDimension2]* atomPitchInPlane;
@@ -315,6 +314,7 @@ void SimulationBox::createLattice(const Vector3D<indexType> layerCounts,
     materialPointer = & materials_.getByNameOrAdd(material);
     
     int layerTypesIndex =0;
+
     for(;i<size[outOfPlaneDimension_]; i+=1) {
 
         switch(latticeType){
@@ -387,7 +387,7 @@ void SimulationBox::startConcurrentNeighborListGeneration(void){
 void SimulationBox::generateNeighborsConcurrent(void)
 {
     
-    while(true){
+    while (true) {
         //CLOG(ERROR, logName_) << "concurrent Neighbor list";
         std::this_thread::sleep_for(std::chrono::milliseconds(400));
 
@@ -404,7 +404,6 @@ void SimulationBox::generateNeighborsConcurrent(void)
 //! \param force If true neighbor list is created from scratch.
 void SimulationBox::generateNeighbors(bool force)
 {
-    
     if (force)
         updateNeighborList_ = true;
 
@@ -428,17 +427,17 @@ void SimulationBox::generateNeighbors(indexType layers,
 
     bool parametersChanged = false;
     
-    if (layers != neighborListLayers_){
+    if (layers != neighborListLayers_) {
         neighborListLayers_ = layers;
         parametersChanged = true;
     }
 
-    if (radius != neighborListRadius_){
+    if (radius != neighborListRadius_) {
         neighborListRadius_ = radius;
         parametersChanged = true;
     }
 
-    if (periodicBoundaries != neighborListPeriodicBoundaries_){
+    if (periodicBoundaries != neighborListPeriodicBoundaries_) {
         neighborListPeriodicBoundaries_ = periodicBoundaries;
         parametersChanged = true;
     }
@@ -468,7 +467,7 @@ void SimulationBox::updateNeighbors(void)
     double checkValue = neighborListRadius_*neighborListRadius_;
     std::vector<Atom *> atoms, neighbors;
     
-    if (! updateNeighborList_){
+    if (! updateNeighborList_) {
         CLOG(DEBUG, logName_) << "no update of neighbor list required "
                              << "because nothing changed";
         return;
@@ -659,7 +658,7 @@ Range3D<indexType> SimulationBox::getSurrounding(
 //##############################################################################
 
 //! Runs several relaxation steps in parallel on the simulation box. The number
-//! of single peaces that shall be worked on has to be even. Since  energy
+//! of single pieces that shall be worked on has to be even. Since energy
 //! calculation needs also atoms in neighboring slices the single pieces are
 //! optimized in an interleaved fashion, i.e., in the first run the 1st, 3rd,
 //! 5th .. are processed. In the second step the 2nd, 4th, 6th ... For a
@@ -770,8 +769,8 @@ double SimulationBox::getEnergySingleAtom(const Atom *atom,
     CLOG(TRACE, logName_) << "Element: " << atom->getElementId();
 
     if (neighborList.size() == 0) {
-	CLOG(WARNING, logName_) << "Neighborlist of atom " << atomIndex.str() <<
-	    " is empty!";
+        CLOG(WARNING, logName_) << "Neighborlist of atom " << atomIndex.str() <<
+            " is empty!";
         return 0.0;
     }
     
@@ -789,9 +788,9 @@ double SimulationBox::getEnergySingleAtom(const Atom *atom,
         lengthVector1 = sqrt(vector1.squaredLength());
 
         if (param.isAboveCutoff(lengthVector1)){
-	    CLOG(DEBUG, logName_) << "distance between " << atomIndex.str() <<
-		" and " << neighbor1.str() << " outside cutoff radius";
-            continue;
+            CLOG(DEBUG, logName_) << "distance between " << atomIndex.str() <<
+            " and " << neighbor1.str() << " outside cutoff radius";
+                continue;
         }
 
         xi = 0.0;
@@ -907,7 +906,7 @@ void SimulationBox::createOptimizedRoughness(
 //##############################################################################
 
 //! Runs several relaxation steps in parallel on the simulation box. The number
-//! of single peaces that shall be worked on has to be even. Since  energy
+//! of single pieces that shall be worked on has to be even. Since  energy
 //! calculation needs also atoms in neighboring slices the single pieces are
 //! optimized in an interleaved fashion, i.e., in the first run the 1st, 3rd,
 //! 5th .. are processed. In the second step the 2nd, 4th, 6th ... For a
@@ -921,9 +920,13 @@ void SimulationBox::mmcRelaxParallel(const TersoffPotential &tersoff,
 
     Vector3D<indexType> size = lattice_.getSize();
     indexType stepWidth = (size[outOfPlaneDimension_]+1)/partCount;
-    if (stepWidth < 2){
+
+    if (stepWidth < 2) {
         partCount = int((size[outOfPlaneDimension_]+1)/2);
-        if ( (partCount%2) == 1 ) partCount--;
+
+        if ( (partCount%2) == 1 )
+            partCount--;
+
         CLOG(INFO, logName_) <<  "Width of " << stepWidth << " atomic layers is too little for "
                                 << " parallel computation. Decreasing parallel worker count to "
                                 << partCount/2;
@@ -940,10 +943,10 @@ void SimulationBox::mmcRelaxParallel(const TersoffPotential &tersoff,
 
     CLOG(DEBUG, logName_) << "Each thread serves " << stepWidth << " layers";
    
-    for (int k=0; k<2; k++){
-
+    for (int k=0; k<2; k++) {
         indexType startLayer = k*stepWidth;
-        for (int threadID=0; threadID<threadCount; threadID++){
+
+        for (int threadID=0; threadID<threadCount; threadID++) {
             localStatistics[threadID].clear();
             partialRange.start[outOfPlaneDimension_] = startLayer;
             partialRange.stop[outOfPlaneDimension_] = startLayer+stepWidth-1;
@@ -992,40 +995,37 @@ void SimulationBox::mmcRelax(const TersoffPotential &tersoff,
     
     std::vector<Atom *> atoms = lattice_.getAtomList(range);
 
-    for (int i=0; i<parameter.mmcRunCount; i++){
-	CLOG(TRACE, logName_) << "Starting run number " << i;
-	
-	int counter=0;
-	shuffle (atoms.begin(), atoms.end(), random_);
-	
-	for (auto atom: atoms){
+    for (int i=0; i<parameter.mmcRunCount; i++) {
+        CLOG(TRACE, logName_) << "Starting run number " << i;
+        
+        int counter=0;
+        shuffle (atoms.begin(), atoms.end(), random_);
+        
+        for (auto atom: atoms){
 
-        CLOG(TRACE, logName_) << "Starting atom number " << counter;
-	
-	    position = atom->getPosition();
-	    energyBefore=getEnergySingleAtom(atom, tersoff);
-	    atom->displace(parameter.mmcMaxDisplacement);
-	    energyAfter=getEnergySingleAtom(atom, tersoff);
+            CLOG(TRACE, logName_) << "Starting atom number " << counter;
+        
+            position = atom->getPosition();
+            energyBefore=getEnergySingleAtom(atom, tersoff);
+            atom->displace(parameter.mmcMaxDisplacement);
+            energyAfter=getEnergySingleAtom(atom, tersoff);
 
-	    if (energyAfter > energyBefore){
+            if (energyAfter > energyBefore) {
+                //Casually accept moves which worse energy to leave local minima
+                if (distribution(random_) >
+                    ArrheniusFactor::Boltzmann(
+                            std::abs(energyAfter-energyBefore),
+                            lattice_.getTemperature()
+                                   )) {
+                    statistic.rejectCount ++;
+                    atom->setPreviousPosition();
+                } else
+                    statistic.acceptCount ++;
+            } else
+                statistic.acceptCount ++;	    
 
-		//Casually accept moves which worse energy to leave local minima
-		if (distribution(random_) >
-		    ArrheniusFactor::Boltzmann(
-					std::abs(energyAfter-energyBefore),
-					lattice_.getTemperature()
-					       )
-		    ){
-		    statistic.rejectCount ++;
-		    atom->setPreviousPosition();
-		}
-		else
-		    statistic.acceptCount ++;
-	    }else
-		statistic.acceptCount ++;	    
-
-	    counter++;
-	}
+            counter++;
+        }
     }
     
     updateNeighborList_ = true;
@@ -1045,50 +1045,46 @@ void SimulationBox::getRandomInterval(Range3D<indexType> &range,
 	      (range.stop[dimension] >= latticeSize[dimension]) );
     
     if ( (! range.apply[dimension]) || isCompleteLattice ){
-	std::uniform_int_distribution<indexType>
-	    rangeDistr(0, latticeSize[dimension]-1);
+        std::uniform_int_distribution<indexType>
+            rangeDistr(0, latticeSize[dimension]-1);
 
-	range.apply[dimension] = true;
-	range.start[dimension] = rangeDistr(random_);
-	range.stop[dimension] = rangeDistr(random_);
-    }
-    else if(range.start[dimension] <=
-	    range.stop[dimension]){
+        range.apply[dimension] = true;
+        range.start[dimension] = rangeDistr(random_);
+        range.stop[dimension] = rangeDistr(random_);
+    } else if(range.start[dimension] <=
+	    range.stop[dimension]) {
 
-	std::uniform_int_distribution<indexType>
-	    rangeDistrStart(0, range.stop[dimension]-
-		       range.start[dimension]);
-	
-	range.start[dimension] += rangeDistrStart(random_);
+        std::uniform_int_distribution<indexType>
+            rangeDistrStart(0, range.stop[dimension]-
+                   range.start[dimension]);
+        
+        range.start[dimension] += rangeDistrStart(random_);
 
-	// ensure this way that stop value >= start value
-	std::uniform_int_distribution<indexType>
-	    rangeDistrStop(0, range.stop[dimension]-
-		       range.start[dimension]);
+        // ensure this way that stop value >= start value
+        std::uniform_int_distribution<indexType>
+            rangeDistrStop(0, range.stop[dimension]-
+                   range.start[dimension]);
 
-	range.stop[dimension] = range.start[dimension] +
-	    rangeDistrStop(random_);
-    }
-    else{
+        range.stop[dimension] = range.start[dimension] +
+            rangeDistrStop(random_);
+    } else {
+        indexType randomRange = latticeSize[dimension] -
+            range.start[dimension]+range.stop[dimension];
+        std::uniform_int_distribution<indexType> rangeDistrStart(0,randomRange);
 
-	indexType randomRange = latticeSize[dimension] -
-	    range.start[dimension]+range.stop[dimension];
-	std::uniform_int_distribution<indexType> rangeDistrStart(0,randomRange);
+        indexType randomChoice = rangeDistrStart(random_);
+        range.start[dimension] += randomChoice;
+        range.start[dimension] %= latticeSize[dimension];
+        
+        // ensure this way that stop value after start value in specified
+        // interval
+        std::uniform_int_distribution<indexType>
+            rangeDistrStop(0, randomRange-randomChoice);
 
-	indexType randomChoice = rangeDistrStart(random_);
-	range.start[dimension] += randomChoice;
-	range.start[dimension] %= latticeSize[dimension];
-	
-	// ensure this way that stop value after start value in specified
-	// interval
-	std::uniform_int_distribution<indexType>
-	    rangeDistrStop(0, randomRange-randomChoice);
-
-	randomChoice = rangeDistrStop(random_);
-	range.stop[dimension] = range.start[dimension] +
-	    rangeDistrStop(random_);
-	range.stop[dimension] %= latticeSize[dimension];	
-	
+        randomChoice = rangeDistrStop(random_);
+        range.stop[dimension] = range.start[dimension] +
+            rangeDistrStop(random_);
+        range.stop[dimension] %= latticeSize[dimension];	
     }
 }
 
@@ -1106,7 +1102,6 @@ void SimulationBox::scale(const TersoffPotential &tersoff,
 			  OptimizationStatistic &statistic,
 			  Range3D<indexType> range)
 {
-
     std::vector<Atom *> shiftAtoms, scaleAtoms;
     double reference, extremeShift = 0, shift, energyBefore;
     Vector3D<spaceType> position;
@@ -1131,14 +1126,14 @@ void SimulationBox::scale(const TersoffPotential &tersoff,
 
     
     if (range.start[outOfPlaneDimension_] > 0)
-	refLayerIndex = range.start[outOfPlaneDimension_]-1;
+        refLayerIndex = range.start[outOfPlaneDimension_]-1;
     else
-	refLayerIndex = latticeSize[outOfPlaneDimension_]-1;
+        refLayerIndex = latticeSize[outOfPlaneDimension_]-1;
     
     // Pick reference atom which serves as reference point. Its distance to the
     // single atoms is scaled.
     reference = lattice_.getFirstAtomInLayer(refLayerIndex,outOfPlaneDimension_)
-	->getPosition()[outOfPlaneDimension_];
+        ->getPosition()[outOfPlaneDimension_];
 
     energyBefore = getEnergy(tersoff);
     scaleAtoms = lattice_.getAtomList(range);
@@ -1146,27 +1141,27 @@ void SimulationBox::scale(const TersoffPotential &tersoff,
     //--------------------------------------------------------------------------
     // scale
     
-    for (auto atom: scaleAtoms){
-	// Scale distance between atoms and reference atom.
-	
-	double localReference;
-	position = atom->getPosition();
+    for (auto atom: scaleAtoms) {
+        // Scale distance between atoms and reference atom.
+        
+        double localReference;
+        position = atom->getPosition();
 
-	if (position[outOfPlaneDimension_] > reference)
-	    localReference = reference;
-	else
-	    localReference = reference-size_[outOfPlaneDimension_];
-	
-	// newpos = (oldpos - reference) * scaling + reference
-	// shift = newpos - oldpos
-	shift = (scaling -1) * position[outOfPlaneDimension_] +
-	    (1- scaling) * localReference;
-	position[outOfPlaneDimension_] += shift;
-	atom->setPosition(position, true);
-	
-	if (std::abs(shift) > std::abs(extremeShift))
-	    extremeShift = shift;
-	
+        if (position[outOfPlaneDimension_] > reference)
+            localReference = reference;
+        else
+            localReference = reference-size_[outOfPlaneDimension_];
+        
+        // newpos = (oldpos - reference) * scaling + reference
+        // shift = newpos - oldpos
+        shift = (scaling -1) * position[outOfPlaneDimension_] +
+            (1- scaling) * localReference;
+        position[outOfPlaneDimension_] += shift;
+        atom->setPosition(position, true);
+        
+        if (std::abs(shift) > std::abs(extremeShift))
+            extremeShift = shift;
+        
     }
 
     //--------------------------------------------------------------------------
@@ -1175,36 +1170,35 @@ void SimulationBox::scale(const TersoffPotential &tersoff,
     bool smallerThanSize = (range.stop[outOfPlaneDimension_] <
 			    (latticeSize[outOfPlaneDimension_]-1) );
     
-    if (range.apply[outOfPlaneDimension_] && smallerThanSize){
+    if (range.apply[outOfPlaneDimension_] && smallerThanSize) {
+        // Shift all atoms above the specified range to preserve the distance
+        // between last scaled layer and following one.
+        Range3D<indexType> shiftRange = range;
 
-	// Shift all atoms above the specified range to preserve the distance
-	// between last scaled layer and following one.
-	Range3D<indexType> shiftRange = range;
+        shiftRange.start[outOfPlaneDimension_]=
+            range.stop[outOfPlaneDimension_]+1;
+        shiftRange.stop[outOfPlaneDimension_]=
+            latticeSize[outOfPlaneDimension_]-1;
 
-	shiftRange.start[outOfPlaneDimension_]=
-	    range.stop[outOfPlaneDimension_]+1;
-	shiftRange.stop[outOfPlaneDimension_]=
-	    latticeSize[outOfPlaneDimension_]-1;
+        // CLOG(INFO, logName_) << "Using out-of-plane interval [ " <<
+        //     shiftRange.start[outOfPlaneDimension_] << "," <<
+        //     shiftRange.stop[outOfPlaneDimension_] << "]";
+            
+        shiftAtoms = lattice_.getAtomList(shiftRange);
 
-	// CLOG(INFO, logName_) << "Using out-of-plane interval [ " <<
-	//     shiftRange.start[outOfPlaneDimension_] << "," <<
-	//     shiftRange.stop[outOfPlaneDimension_] << "]";
-	    
-	shiftAtoms = lattice_.getAtomList(shiftRange);
+        for(auto atom: shiftAtoms) {
+            position = atom->getPosition();
+            position[outOfPlaneDimension_] += extremeShift;
 
-	for(auto atom: shiftAtoms){
-	    position = atom->getPosition();
-	    position[outOfPlaneDimension_] += extremeShift;
-
-	    // Some atoms get moved twice, once during the scalig procedure and
-	    // once in this shift operation. This happens when the start layer >
-	    // stop layer. For these the second move must not be saved because
-	    // then returning to the original position is not possible any more!
-	    if (atom->getIndex().isInRange(range))
-		atom->setPosition(position);
-	    else
-		atom->setPosition(position, true);
-	}
+            // Some atoms get moved twice, once during the scalig procedure and
+            // once in this shift operation. This happens when the start layer >
+            // stop layer. For these the second move must not be saved because
+            // then returning to the original position is not possible any more!
+            if (atom->getIndex().isInRange(range))
+                atom->setPosition(position);
+            else
+                atom->setPosition(position, true);
+        }
     }
     
     size_[outOfPlaneDimension_] += extremeShift;
@@ -1216,21 +1210,19 @@ void SimulationBox::scale(const TersoffPotential &tersoff,
     CLOG(DEBUG, logName_) << "before: " << energyBefore << ", after: " <<
 	energyAfter;
     
-    if (energyAfter > energyBefore){
+    if (energyAfter > energyBefore) {
+        CLOG(DEBUG, logName_) << "energy did not decrease, scaling is reverted";
+        statistic.rejectCount ++;
+        size_[outOfPlaneDimension_] -= extremeShift;
+        
+        for (auto atom: scaleAtoms)
+            atom->setPreviousPosition();
+            
+        for (auto atom: shiftAtoms)
+            atom->setPreviousPosition();
 
-	CLOG(DEBUG, logName_) << "energy did not decrease, scaling is reverted";
-	statistic.rejectCount ++;
-	size_[outOfPlaneDimension_] -= extremeShift;
-	
-	for (auto atom: scaleAtoms)
-	    atom->setPreviousPosition();
-	    
-	for (auto atom: shiftAtoms)
-	    atom->setPreviousPosition();
-
-    }
-    else
-	statistic.acceptCount ++;
+    } else
+        statistic.acceptCount ++;
 
     updateNeighborList_ = true;
     CLOG(TRACE, logName_) << "finished scaling of simulation box";
@@ -1263,10 +1255,9 @@ void SimulationBox::writeToXYZ(const std::string fileName,
     xyzFile << "name\tx\ty\tz\ti\tj\tk" << std::endl;
 
     for (auto atom : atoms){
-	xyzFile << pt.getById(atom->getElementId()).symbol << "\t";
-	xyzFile << atom->getPosition().strTab() << "\t";
-	xyzFile << atom->getIndex().strTab() << std::endl;
-	
+        xyzFile << pt.getById(atom->getElementId()).symbol << "\t";
+        xyzFile << atom->getPosition().strTab() << "\t";
+        xyzFile << atom->getIndex().strTab() << std::endl;
     }
     
     xyzFile.close();
