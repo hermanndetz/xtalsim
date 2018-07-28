@@ -10,12 +10,13 @@ of the MIT license.  See the LICENSE file for details.
 //------------------------------------------------------------------------------
 
 TersoffParameter::TersoffParameter(elementType elementId1,
-		   elementType elementId2, std::string _name, std::string _mode,
+		   elementType elementId2, std::string _name, std::string _comment,
+           std::string _mode,
 		   double _a, double _b, double _beta,double _c,
 		   double _d, double _d0, double _dd, double _delta,
 		   double _gamma, double _h, double _lambda, double _lambda3,
            double _mu, double _n, double _r0, double _rCut, double _s)
-    :name(_name), mode(_mode),
+    :name(_name), comment(_comment), mode(_mode),
      a(_a), b(_b), beta(_beta), c(_c), d(_d), d0(_d0), dd(_dd), delta(_delta),
      gamma(_gamma), h(_h), lambda(_lambda), lambda3(_lambda3), mu(_mu),
      n(_n), r0(_r0), rCut(_rCut), s(_s)
@@ -41,6 +42,7 @@ TersoffParameter::TersoffParameter(const TersoffParameter &parameter)
     elementIdLow = parameter.elementIdLow;
     elementIdHigh = parameter.elementIdHigh;
     name = parameter.name;    
+    comment = parameter.comment;
     mode = parameter.mode;
     a = parameter.a;
     b = parameter.b;

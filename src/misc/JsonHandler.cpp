@@ -67,21 +67,21 @@ void JsonHandler::set(const PeriodicTable &periodicTable)
     // remove already existing node with the same name
     jsonDoc_.removeMember("periodic_table");
         
-    for (auto el: elements){
-	Json::Value elementNode(Json::objectValue);
-		
-	elementNode["name"] = el.name;
-	elementNode["symbol"] = el.symbol;
-	elementNode["proton"] = el.protonCount;
-	elementNode["neutron"] = el.neutronCount;
-	elementNode["period"] = el.period;
-	elementNode["group"] = el.group;	
-	elementNode["mass"] = el.mass;
-	elementNode["weight"] = el.weight;
-	elementNode["color"] = el.color.str();
+    for (auto el: elements) {
+        Json::Value elementNode(Json::objectValue);
+            
+        elementNode["name"] = el.name;
+        elementNode["symbol"] = el.symbol;
+        elementNode["proton"] = el.protonCount;
+        elementNode["neutron"] = el.neutronCount;
+        elementNode["period"] = el.period;
+        elementNode["group"] = el.group;	
+        elementNode["mass"] = el.mass;
+        elementNode["weight"] = el.weight;
+        elementNode["color"] = el.color.str();
 
-	counter++;
-	tableNode.append(elementNode);
+        counter++;
+        tableNode.append(elementNode);
     }
 
     jsonDoc_["periodic_table"]=tableNode;
@@ -104,20 +104,19 @@ void JsonHandler::get(PeriodicTable &periodicTable) const
     unsigned int counter=0;
     Json::Value elements = jsonDoc_["periodic_table"];
 
-    for (unsigned int i=0; i < elements.size(); i++, counter++){
-	
-	Element element(elements[i].get("name","undef").asString(),
-			elements[i].get("symbol","undef").asString(),
-			(uint8_t)elements[i].get("proton",0).asInt(),
-			(uint8_t)elements[i].get("neutron",0).asInt(),
-			(uint8_t)elements[i].get("period",0).asInt(),
-			(uint8_t)elements[i].get("group",0).asInt(),
-			elements[i].get("mass",0).asDouble(),
-			elements[i].get("weight",0).asDouble(),
-			elements[i].get("color","undef").asString()
-			);
-	
-	periodicTable.add(element);
+    for (unsigned int i=0; i < elements.size(); i++, counter++) {
+        Element element(elements[i].get("name","undef").asString(),
+                elements[i].get("symbol","undef").asString(),
+                (uint8_t)elements[i].get("proton",0).asInt(),
+                (uint8_t)elements[i].get("neutron",0).asInt(),
+                (uint8_t)elements[i].get("period",0).asInt(),
+                (uint8_t)elements[i].get("group",0).asInt(),
+                elements[i].get("mass",0).asDouble(),
+                elements[i].get("weight",0).asDouble(),
+                elements[i].get("color","undef").asString()
+                );
+        
+        periodicTable.add(element);
     }
 
     CLOG(DEBUG, logName_) << counter <<
@@ -145,42 +144,43 @@ void JsonHandler::set(const TersoffPotential &potential)
     // remove already existing nodes with the same name
     jsonDoc_.removeMember("tersoff");
 
-    for(auto it = potential.get().begin(); it != potential.get().end();
-	++it, counter++){
-	Json::Value potentialNode(Json::objectValue);
+    for (auto it = potential.get().begin(); it != potential.get().end();
+        ++it, counter++) {
+        Json::Value potentialNode(Json::objectValue);
 
-	potentialNode["name"] = it->second.name;
+        potentialNode["name"] = it->second.name;
+        potentialNode["comment"] = it->second.comment;
 
-	const Element *element = &pt.getById(it->second.elementIdLow);
-	potentialNode["element1"] = element->symbol;	
-	potentialNode["proton1"] = element->protonCount;
-	potentialNode["neutron1"] = element->neutronCount;
-	
-	element = &pt.getById(it->second.elementIdHigh);
-	potentialNode["element2"] = element->symbol;	
-	potentialNode["proton2"] = element->protonCount;
-	potentialNode["neutron2"] = element->neutronCount;
-	
-	potentialNode["mode"] = it->second.mode;
-	potentialNode["beta"] = it->second.beta;
-	potentialNode["delta"] = it->second.delta;
-	potentialNode["gamma"] = it->second.gamma;
-	potentialNode["lambda"] = it->second.lambda;
-	potentialNode["lambda3"] = it->second.lambda3;
-	potentialNode["mu"] = it->second.mu;
-	potentialNode["A"] = it->second.a;
-	potentialNode["B"] = it->second.b;
-	potentialNode["C"] = it->second.c;
-	potentialNode["D"] = it->second.d;
-	potentialNode["D0"] = it->second.d0;
-	potentialNode["DD"] = it->second.dd;
-	potentialNode["H"] = it->second.h;
-	potentialNode["N"] = it->second.n;
-	potentialNode["Rcut"] = it->second.rCut;
-	potentialNode["R0"] = it->second.r0;
-	potentialNode["S"] = it->second.s;
+        const Element *element = &pt.getById(it->second.elementIdLow);
+        potentialNode["element1"] = element->symbol;	
+        potentialNode["proton1"] = element->protonCount;
+        potentialNode["neutron1"] = element->neutronCount;
+        
+        element = &pt.getById(it->second.elementIdHigh);
+        potentialNode["element2"] = element->symbol;	
+        potentialNode["proton2"] = element->protonCount;
+        potentialNode["neutron2"] = element->neutronCount;
+        
+        potentialNode["mode"] = it->second.mode;
+        potentialNode["beta"] = it->second.beta;
+        potentialNode["delta"] = it->second.delta;
+        potentialNode["gamma"] = it->second.gamma;
+        potentialNode["lambda"] = it->second.lambda;
+        potentialNode["lambda3"] = it->second.lambda3;
+        potentialNode["mu"] = it->second.mu;
+        potentialNode["A"] = it->second.a;
+        potentialNode["B"] = it->second.b;
+        potentialNode["C"] = it->second.c;
+        potentialNode["D"] = it->second.d;
+        potentialNode["D0"] = it->second.d0;
+        potentialNode["DD"] = it->second.dd;
+        potentialNode["H"] = it->second.h;
+        potentialNode["N"] = it->second.n;
+        potentialNode["Rcut"] = it->second.rCut;
+        potentialNode["R0"] = it->second.r0;
+        potentialNode["S"] = it->second.s;
 
-	tersoffNode.append(potentialNode);
+        tersoffNode.append(potentialNode);
     }
 
     jsonDoc_["tersoff"] = tersoffNode;
@@ -208,39 +208,39 @@ void JsonHandler::get(TersoffPotential &potential) const
     
     Json::Value tersoff = jsonDoc_["tersoff"];
     
-    for (unsigned int i=0; i < tersoff.size(); i++, counter++){
+    for (unsigned int i=0; i < tersoff.size(); i++, counter++) {
+        proton1 = (uint8_t)tersoff[i].get("proton1",0).asInt();
+        neutron1 = (uint8_t)tersoff[i].get("neutron1",0).asInt();
+        elementId1 = pt.getByProtonNeutron(proton1, neutron1).id;
 
-	proton1 = (uint8_t)tersoff[i].get("proton1",0).asInt();
-	neutron1 = (uint8_t)tersoff[i].get("neutron1",0).asInt();
-	elementId1 = pt.getByProtonNeutron(proton1, neutron1).id;
-
-	proton2 = (uint8_t)tersoff[i].get("proton2",0).asInt();
-	neutron2 = (uint8_t)tersoff[i].get("neutron2",0).asInt();
-	elementId2 = pt.getByProtonNeutron(proton2, neutron2).id;
-	
-	TersoffParameter parameter(elementId1, elementId2,
-				   tersoff[i].get("name","undef").asString(),
-				   tersoff[i].get("mode","undef").asString(),
-				   tersoff[i].get("A",0).asDouble(),
-				   tersoff[i].get("B",0).asDouble(),
-				   tersoff[i].get("beta",0).asDouble(),
-				   tersoff[i].get("C",0).asDouble(),
-				   tersoff[i].get("D",0).asDouble(),
-				   tersoff[i].get("D0",0).asDouble(),
-				   tersoff[i].get("DD",0).asDouble(),
-				   tersoff[i].get("delta",0).asDouble(),
-				   tersoff[i].get("gamma",0).asDouble(),
-				   tersoff[i].get("H",0).asDouble(),
-				   tersoff[i].get("lambda",0).asDouble(),
-				   tersoff[i].get("lambda3",0).asDouble(),
-				   tersoff[i].get("mu",0).asDouble(),
-				   tersoff[i].get("N",0).asDouble(),
-				   tersoff[i].get("R0",0).asDouble(),
-				   tersoff[i].get("Rcut",0).asDouble(),
-				   tersoff[i].get("S",0).asDouble()
-				   );
-	
-	potential.add(parameter);
+        proton2 = (uint8_t)tersoff[i].get("proton2",0).asInt();
+        neutron2 = (uint8_t)tersoff[i].get("neutron2",0).asInt();
+        elementId2 = pt.getByProtonNeutron(proton2, neutron2).id;
+        
+        TersoffParameter parameter(elementId1, elementId2,
+                       tersoff[i].get("name","undef").asString(),
+                       tersoff[i].get("comment","undef").asString(),
+                       tersoff[i].get("mode","undef").asString(),
+                       tersoff[i].get("A",0).asDouble(),
+                       tersoff[i].get("B",0).asDouble(),
+                       tersoff[i].get("beta",0).asDouble(),
+                       tersoff[i].get("C",0).asDouble(),
+                       tersoff[i].get("D",0).asDouble(),
+                       tersoff[i].get("D0",0).asDouble(),
+                       tersoff[i].get("DD",0).asDouble(),
+                       tersoff[i].get("delta",0).asDouble(),
+                       tersoff[i].get("gamma",0).asDouble(),
+                       tersoff[i].get("H",0).asDouble(),
+                       tersoff[i].get("lambda",0).asDouble(),
+                       tersoff[i].get("lambda3",0).asDouble(),
+                       tersoff[i].get("mu",0).asDouble(),
+                       tersoff[i].get("N",0).asDouble(),
+                       tersoff[i].get("R0",0).asDouble(),
+                       tersoff[i].get("Rcut",0).asDouble(),
+                       tersoff[i].get("S",0).asDouble()
+                       );
+        
+            potential.add(parameter);
     }
 
     CLOG(DEBUG, logName_) << counter <<" Tersoff Parameters generated from JSON";
@@ -267,61 +267,61 @@ void JsonHandler::set(const MaterialCollection &collection)
     // remove already existing nodes with the same name
     jsonDoc_.removeMember("material-collection");
 
-    for(auto it = collection.get().begin(); it != collection.get().end();
-	++it, counter++){
+    for (auto it = collection.get().begin(); it != collection.get().end();
+        ++it, counter++) {
 
-	Json::Value materialNode(Json::objectValue);
-	std::vector<double> elasticConstants = it->getElasticConstants();
+        Json::Value materialNode(Json::objectValue);
+        std::vector<double> elasticConstants = it->getElasticConstants();
 
-	
-	materialNode["name"] = it->getName();
-	materialNode["lattice-constant"] = it->getLatticeConstant();
-	
-	materialNode["c11"] = elasticConstants[0];
-	materialNode["c12"] = elasticConstants[1];
-	materialNode["c44"] = elasticConstants[2];
-
-	component = it->getCations();
-
-	Json::Value cationsNode(Json::arrayValue);
-
-    double lastShare=0;
-	for (auto it2 = component.begin(); it2 != component.end(); ++it2){
-	    Json::Value cation (Json::objectValue);
-
-        auto element = pt.getById(std::get<0>(*it2));
-	    cation["element"] = element.symbol;
-	    cation["proton"] = element.protonCount;
-	    cation["neutron"] =	element.neutronCount;
-	    cation["share"] = std::get<1>(*it2)-lastShare;
-        lastShare = std::get<1>(*it2);
-
-	    cationsNode.append(cation);
-	}
-
-	materialNode["cations"] = cationsNode;
-
-	component = it->getAnions();
-
-	Json::Value anionsNode(Json::arrayValue);
-
-    lastShare=0;
-	for (auto it2 = component.begin(); it2 != component.end(); ++it2){
-	    Json::Value anion (Json::objectValue);
-
-        auto element = pt.getById(std::get<0>(*it2));
-	    anion["element"] = element.symbol;
-	    anion["proton"] = element.protonCount;
-	    anion["neutron"] =	element.neutronCount;
-	    anion["share"] = std::get<1>(*it2)-lastShare;
-        lastShare = std::get<1>(*it2);
         
-	    anionsNode.append(anion);
-	}
+        materialNode["name"] = it->getName();
+        materialNode["lattice-constant"] = it->getLatticeConstant();
+        
+        materialNode["c11"] = elasticConstants[0];
+        materialNode["c12"] = elasticConstants[1];
+        materialNode["c44"] = elasticConstants[2];
 
-	materialNode["anions"] = anionsNode;
+        component = it->getCations();
 
-	collectionNode.append(materialNode);
+        Json::Value cationsNode(Json::arrayValue);
+
+        double lastShare=0;
+        for (auto it2 = component.begin(); it2 != component.end(); ++it2) {
+            Json::Value cation (Json::objectValue);
+
+            auto element = pt.getById(std::get<0>(*it2));
+            cation["element"] = element.symbol;
+            cation["proton"] = element.protonCount;
+            cation["neutron"] =	element.neutronCount;
+            cation["share"] = std::get<1>(*it2)-lastShare;
+            lastShare = std::get<1>(*it2);
+
+            cationsNode.append(cation);
+        }
+
+        materialNode["cations"] = cationsNode;
+
+        component = it->getAnions();
+
+        Json::Value anionsNode(Json::arrayValue);
+
+        lastShare=0;
+        for (auto it2 = component.begin(); it2 != component.end(); ++it2) {
+            Json::Value anion (Json::objectValue);
+
+            auto element = pt.getById(std::get<0>(*it2));
+            anion["element"] = element.symbol;
+            anion["proton"] = element.protonCount;
+            anion["neutron"] =	element.neutronCount;
+            anion["share"] = std::get<1>(*it2)-lastShare;
+            lastShare = std::get<1>(*it2);
+            
+            anionsNode.append(anion);
+        }
+
+        materialNode["anions"] = anionsNode;
+
+        collectionNode.append(materialNode);
     }
 
     jsonDoc_["material-collection"] = collectionNode;
@@ -349,48 +349,46 @@ void JsonHandler::get(MaterialCollection &collection)
 
     Json::Value materials = jsonDoc_["material-collection"];
     
-    for (unsigned int i=0; i < materials.size(); i++, counter++){
-    
-	MaterialComponents cations, anions;
-	Json::Value jsonCations = materials[i]["cations"];
+    for (unsigned int i=0; i < materials.size(); i++, counter++) {
+        
+        MaterialComponents cations, anions;
+        Json::Value jsonCations = materials[i]["cations"];
 
-	for(unsigned int j=0; j< jsonCations.size(); j++){
-	    
-	    cations.push_back (std::make_tuple (
-		      pt.getByProtonNeutron(
-			    (uint8_t)jsonCations[j].get("proton",0).asInt(),
-			    (uint8_t)jsonCations[j].get("neutron",0).asInt()
-					       ).id,
-		      jsonCations[j].get("share",1).asDouble()
-							  )
-			    );
-	}
-	
-	Json::Value jsonAnions = materials[i]["anions"];
-	
-	for(unsigned int j=0; j< jsonAnions.size(); j++){
-	    
-	    anions.push_back (std::make_tuple (
-		      pt.getByProtonNeutron(
-			    (uint8_t)jsonAnions[j].get("proton",0).asInt(),
-			    (uint8_t)jsonAnions[j].get("neutron",0).asInt()
-					       ).id,
-		      jsonAnions[j].get("share",1).asDouble()
-							  )
-			    );
-	}
+        for (unsigned int j=0; j< jsonCations.size(); j++) {
+            cations.push_back (std::make_tuple (
+                  pt.getByProtonNeutron(
+                    (uint8_t)jsonCations[j].get("proton",0).asInt(),
+                    (uint8_t)jsonCations[j].get("neutron",0).asInt()
+                               ).id,
+                  jsonCations[j].get("share",1).asDouble()
+                                  )
+                    );
+        }
+        
+        Json::Value jsonAnions = materials[i]["anions"];
+        
+        for (unsigned int j=0; j< jsonAnions.size(); j++) {
+            anions.push_back (std::make_tuple (
+                  pt.getByProtonNeutron(
+                    (uint8_t)jsonAnions[j].get("proton",0).asInt(),
+                    (uint8_t)jsonAnions[j].get("neutron",0).asInt()
+                               ).id,
+                  jsonAnions[j].get("share",1).asDouble()
+                                  )
+                    );
+        }
 
-	Material material(
-			  materials[i].get("name","undef").asString(),
-			  cations, anions,
-			  materials[i].get("lattice-constant",0).asDouble(),
-			  materials[i].get("c11",0).asDouble(),
-			  materials[i].get("c12",0).asDouble(),
-			  materials[i].get("c44",0).asDouble()
-			  );
-	
-	collection.add(material);
-	
+        Material material(
+                  materials[i].get("name","undef").asString(),
+                  cations, anions,
+                  materials[i].get("lattice-constant",0).asDouble(),
+                  materials[i].get("c11",0).asDouble(),
+                  materials[i].get("c12",0).asDouble(),
+                  materials[i].get("c44",0).asDouble()
+                  );
+        
+        collection.add(material);
+        
     }
 
     CLOG(DEBUG, logName_) << counter <<" Materials generated from JSON";
@@ -421,37 +419,44 @@ void JsonHandler::set(const Lattice &lattice)
     latticeNode["temperature"] = lattice.getTemperature();
 
     sizeNode.resize(3);
-    for (int i=0; i<3; i++) sizeNode[i] = size[i];
+
+    for (int i=0; i<3; i++)
+        sizeNode[i] = size[i];
+
     latticeNode["size"] = sizeNode;
 
     for (auto atom: lattice.getAtomList()){
+        Json::Value atomNode(Json::objectValue);
+        Vector3D<spaceType> position = atom->getPosition();
+        Vector3D<indexType> index = atom->getIndex();
 
-	Json::Value atomNode(Json::objectValue);
-	Vector3D<spaceType> position = atom->getPosition();
-	Vector3D<indexType> index = atom->getIndex();
+        const Element &element = pt.getById(atom->getElementId());
+        // export as PCDATA nodes
+            atomNode["element"] = element.symbol;
+        atomNode["proton"] = element.protonCount;
+        atomNode["neutron"] = element.neutronCount;
+        atomNode["material"] = atom->getMaterial()->getName();
+        atomNode["modified"] = atom->wasModified();
+        atomNode["modification-index"] = atom->getModificationOrder();
 
-	const Element &element = pt.getById(atom->getElementId());
-	// export as PCDATA nodes
-        atomNode["element"] = element.symbol;
-	atomNode["proton"] = element.protonCount;
-	atomNode["neutron"] = element.neutronCount;
-	atomNode["material"] = atom->getMaterial()->getName();
-	atomNode["modified"] = atom->wasModified();
-    atomNode["modification-index"] = atom->getModificationOrder();
+        Json::Value indexNode(Json::arrayValue);
+        indexNode.resize(3);
 
-	Json::Value indexNode(Json::arrayValue);
-	indexNode.resize(3);
-	for (int i=0; i<3; i++) indexNode[i] = index[i];
-	atomNode["index"] = indexNode;
+        for (int i=0; i<3; i++) 
+            indexNode[i] = index[i];
 
-	Json::Value positionNode(Json::arrayValue);
-	positionNode.resize(3);
-	for (int i=0; i<3; i++) positionNode[i] = position[i];
-	atomNode["position"] = positionNode;
+        atomNode["index"] = indexNode;
 
-	counter++;
-	gridNode.append(atomNode);
-	
+        Json::Value positionNode(Json::arrayValue);
+        positionNode.resize(3);
+
+        for (int i=0; i<3; i++)
+            positionNode[i] = position[i];
+
+        atomNode["position"] = positionNode;
+
+        counter++;
+        gridNode.append(atomNode);
     }
 
     latticeNode["atoms"] = gridNode;
@@ -490,27 +495,26 @@ void JsonHandler::get(Lattice &lattice, const MaterialCollection &materials) con
     
     workNode = workNode["atoms"];
     
-    for (unsigned int i=0; i < workNode.size(); i++, counter++){
+    for (unsigned int i=0; i < workNode.size(); i++, counter++) {
+        Json::Value atomNode = workNode[i];
 
-	Json::Value atomNode = workNode[i];
+        for (int j=0; j<3; j++) {
+            position[j] = atomNode["position"].get(j,0).asDouble();
+            index[j] = (indexType)atomNode["index"].get(j,0).asInt();
+        }
 
-	for (int j=0; j<3; j++){
-	    position[j] = atomNode["position"].get(j,0).asDouble();
-	    index[j] = (indexType)atomNode["index"].get(j,0).asInt();
-	}
+        uint8_t proton = (uint8_t)atomNode.get("proton",0).asInt();
+        uint8_t neutron =(uint8_t)atomNode.get("neutron",0).asInt();
+        std::string name = atomNode.get("material","").asString();
+        bool modified = atomNode.get("modified",false).asBool();
+        uint32_t modificationIndex = atomNode.get("modification-index",0).asInt();
 
-	uint8_t proton = (uint8_t)atomNode.get("proton",0).asInt();
-	uint8_t neutron =(uint8_t)atomNode.get("neutron",0).asInt();
-	std::string name = atomNode.get("material","").asString();
-	bool modified = atomNode.get("modified",false).asBool();
-    uint32_t modificationIndex = atomNode.get("modification-index",0).asInt();
+        lattice(index) =
+            new Atom(pt.getByProtonNeutron(proton,neutron).id, position,
+                 index, &(materials.getByName(name)), modified, false, modificationIndex );
 
-	lattice(index) =
-	    new Atom(pt.getByProtonNeutron(proton,neutron).id, position,
-		     index, &(materials.getByName(name)), modified, false, modificationIndex );
-
-	CLOG(DEBUG, logName_) << name << " Material Name " <<
-	    materials.getByName(name).getName();
+        CLOG(DEBUG, logName_) << name << " Material Name " <<
+            materials.getByName(name).getName();
 
     }
 
@@ -541,7 +545,10 @@ void JsonHandler::set(const SimulationBox &simbox)
     
     Json::Value sizeNode(Json::arrayValue);
     sizeNode.resize(3);
-    for (int i=0; i<3; i++) sizeNode[i] = simbox.getSize()[i];
+
+    for (int i=0; i<3; i++)
+        sizeNode[i] = simbox.getSize()[i];
+    
     simboxNode["size"] = sizeNode;
     
     jsonDoc_["simbox"]=simboxNode;
@@ -599,14 +606,14 @@ void JsonHandler::set(const CompositionInfo &composition)
     Json::Value compNode(Json::arrayValue);
     int counter = 0;
   
-    for (auto i=0; i<composition.getLayerCount(); i++){
-
+    for (auto i=0; i<composition.getLayerCount(); i++) {
         Json::Value layerNode(Json::objectValue);
         LayerCompositionInfo layer = composition.getLayer(i);
 
         layerNode["index"] = i;
         
         Json::Value elementNode(Json::arrayValue);
+
         for (auto entry : layer) {
 
             Json::Value entryNode(Json::objectValue);
@@ -650,18 +657,15 @@ void JsonHandler::get(std::vector<CompositionInfo> &compositions) const
 
     Json::Value compNode = jsonDoc_["compositions"];
 
-    for (auto i=0; i<compNode.size(); i++){
-
+    for (auto i=0; i<compNode.size(); i++) {
         Json::Value layersNode = compNode[i];
         CompositionInfo comp;
 
-        for (auto j=0; j<layersNode.size(); j++){
-
+        for (auto j=0; j<layersNode.size(); j++) {
             LayerCompositionInfo layer;
             Json::Value elements = layersNode[j]["elements"];
 
-            for (auto k=0; k<elements.size(); k++){
-
+            for (auto k=0; k<elements.size(); k++) {
                 auto key = std::make_tuple(elements[k].get("material","undef").asString(),
                                            (elementType)elements[k].get("id",0).asInt() );
 
@@ -687,8 +691,8 @@ int JsonHandler::readEntries(Journal<int> &journal, Json::Value entries) const
 {
     int counter=0;
     
-    for(unsigned int i=0; i<entries.size(); i++, ++counter){
-	journal.add(entries.get(i,0).asInt());
+    for (unsigned int i=0; i<entries.size(); i++, ++counter) {
+        journal.add(entries.get(i,0).asInt());
     }
 
     return counter;
@@ -704,8 +708,8 @@ int JsonHandler::readEntries(Journal<double> &journal, Json::Value entries)
 {
     int counter=0;
     
-    for(unsigned int i=0; i<entries.size(); i++, ++counter){
-	journal.add(entries.get(i,0).asDouble());
+    for (unsigned int i=0; i<entries.size(); i++, ++counter) {
+        journal.add(entries.get(i,0).asDouble());
     }
 
     return counter;
@@ -721,8 +725,8 @@ int JsonHandler::readEntries(Journal<std::string> &journal,
 {
     int counter=0;
     
-    for(unsigned int i=0; i<entries.size(); i++, ++counter){
-	journal.add(entries.get(i,"").asString());
+    for (unsigned int i=0; i<entries.size(); i++, ++counter) {
+        journal.add(entries.get(i,"").asString());
     }
 
     return counter;
@@ -740,22 +744,22 @@ void JsonHandler::get(Configuration &config) const
     Json::Value configNode = jsonDoc_["config"];
     Json::Value workNode = configNode["material"];
     
-    for(unsigned int i=0; i< workNode["cations"].size(); i++){
-	Json::Value cation = workNode["cations"][i];
+    for (unsigned int i=0; i< workNode["cations"].size(); i++) {
+        Json::Value cation = workNode["cations"][i];
 
-	config.cations.push_back( std::make_tuple(
-		  cation.get("element","undef").asString(),
-		  cation.get("share",0).asDouble() )
-				  );
+        config.cations.push_back( std::make_tuple(
+              cation.get("element","undef").asString(),
+              cation.get("share",0).asDouble() )
+                      );
     }
     
-    for(unsigned int i=0; i< workNode["anions"].size(); i++){
-	Json::Value anion = workNode["anions"][i];
+    for (unsigned int i=0; i< workNode["anions"].size(); i++) {
+        Json::Value anion = workNode["anions"][i];
 
-	config.anions.push_back( std::make_tuple(
-		  anion.get("element","undef").asString(),
-		  anion.get("share",0).asDouble() )
-				  );
+        config.anions.push_back( std::make_tuple(
+              anion.get("element","undef").asString(),
+              anion.get("share",0).asDouble() )
+                      );
     }
 
     config.materialName = workNode.get("name","undef").asString();
@@ -829,30 +833,30 @@ void JsonHandler::get(Configuration &config) const
     
     workNode = configNode["switches"];    
 
-    for(unsigned int i=0; i< workNode.size(); i++){
+    for (unsigned int i=0; i< workNode.size(); i++) {
         std::string text(workNode[i].asString());
         
-        if (text == "extend"){
+        if (text == "extend") {
             config.extend=true;
             continue;
         }
 
-        if (text == "calc-energy"){
+        if (text == "calc-energy") {
             config.calculateEnergy=true;
             continue;
         }
 
-        if (text == "quiet"){
+        if (text == "quiet") {
             config.quiet=true;
             continue;
         }
         
-        if (text == "verbose"){
+        if (text == "verbose") {
             config.verbose=true;
             continue;
         }
 
-        if (text == "print-statistics"){
+        if (text == "print-statistics") {
             config.print=true;
             continue;
         }
@@ -867,38 +871,38 @@ void JsonHandler::get(Configuration &config) const
             continue;
         }
 
-        if (text == "static-optimization"){
+        if (text == "static-optimization") {
             config.staticOptimization=true;
             continue;
         }
 
-        if (text == "dynamic-optimization"){
+        if (text == "dynamic-optimization") {
             config.dynamicOptimization=true;
             continue;
         }
 
-        if (text == "require-matching-cation"){
+        if (text == "require-matching-cation") {
             config.requireMatchingCation=true;
             continue;
         }
 
-        if (text == "modfied-only"){
+        if (text == "modfied-only") {
             config.modifiedOnly=true;
             continue;
         }
 
-        if (text == "modified-negative"){
+        if (text == "modified-negative") {
             config.modifiedNegative=true;
             continue;
         }
 
-        if (text == "animate-modification"){
+        if (text == "animate-modification") {
             config.modificationAnimation=true;
             continue;
         }
 
         if ((text == "filter-modified-interface") || 
-                (text == "filter-modified-exchange")){
+                (text == "filter-modified-exchange")) {
             config.filterModificationState.push_back(text);
         }
     }

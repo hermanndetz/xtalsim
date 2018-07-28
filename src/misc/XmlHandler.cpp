@@ -171,20 +171,20 @@ void XmlHandler::get(PeriodicTable &periodicTable) const
 	xmlDoc_.select_nodes("/periodic_table/element");
     pugi::xpath_node_set::const_iterator it;
 
-    for(it = elNodes.begin(); it != elNodes.end(); ++it, counter++){
-	pugi::xpath_node node=*it;
+    for (it = elNodes.begin(); it != elNodes.end(); ++it, counter++) {
+        pugi::xpath_node node=*it;
 
-	Element element(node.node().child("name").text().as_string("undef"),
-			node.node().child("symbol").text().as_string("undef"),
-			(uint8_t)node.node().child("proton").text().as_int(0),
-			(uint8_t)node.node().child("neutron").text().as_int(0),
-			(uint8_t)node.node().child("period").text().as_int(0),
-			(uint8_t)node.node().child("group").text().as_int(0),
-			node.node().child("mass").text().as_double(0),	
-			node.node().child("weight").text().as_double(0),
-            node.node().child("color").text().as_string("undef"));
-	
-	periodicTable.add(element);
+        Element element(node.node().child("name").text().as_string("undef"),
+                node.node().child("symbol").text().as_string("undef"),
+                (uint8_t)node.node().child("proton").text().as_int(0),
+                (uint8_t)node.node().child("neutron").text().as_int(0),
+                (uint8_t)node.node().child("period").text().as_int(0),
+                (uint8_t)node.node().child("group").text().as_int(0),
+                node.node().child("mass").text().as_double(0),	
+                node.node().child("weight").text().as_double(0),
+                node.node().child("color").text().as_string("undef"));
+        
+        periodicTable.add(element);
     }
 
     CLOG(DEBUG, logName_) << counter <<
@@ -215,41 +215,42 @@ void XmlHandler::set(const TersoffPotential &potential)
 
     tersoffNode=xmlDoc_.append_child("tersoff");
 
-    for(auto it = potential.get().begin(); it != potential.get().end();
-	++it, counter++){
-	potentialNode=tersoffNode.append_child("potential");
+    for (auto it = potential.get().begin(); it != potential.get().end();
+        ++it, counter++) {
+        potentialNode=tersoffNode.append_child("potential");
 
-	potentialNode.append_child("name").text() = it->second.name.c_str();
+        potentialNode.append_child("name").text() = it->second.name.c_str();
+        potentialNode.append_child("comment").text() = it->second.comment.c_str();
 
-	const Element *element = &pt.getById(it->second.elementIdLow);
-	potentialNode.append_child("element1").text() = element->symbol.c_str();
-	potentialNode.append_child("proton1").text() = element->protonCount;
-	potentialNode.append_child("neutron1").text() = element->neutronCount;
+        const Element *element = &pt.getById(it->second.elementIdLow);
+        potentialNode.append_child("element1").text() = element->symbol.c_str();
+        potentialNode.append_child("proton1").text() = element->protonCount;
+        potentialNode.append_child("neutron1").text() = element->neutronCount;
 
-	element = &pt.getById(it->second.elementIdHigh);
-	potentialNode.append_child("element2").text() = element->symbol.c_str();
-	potentialNode.append_child("proton2").text() = element->protonCount;
-	potentialNode.append_child("neutron2").text() = element->neutronCount;
-	
-	potentialNode.append_child("mode").text() =
-	    it->second.mode.c_str();
-	potentialNode.append_child("beta").text() = it->second.beta;
-	potentialNode.append_child("delta").text() = it->second.delta;
-	potentialNode.append_child("gamma").text() = it->second.gamma;
-	potentialNode.append_child("lambda").text() = it->second.lambda;
-	potentialNode.append_child("lambda3").text() = it->second.lambda3;
-	potentialNode.append_child("mu").text() = it->second.mu;
-	potentialNode.append_child("A").text() = it->second.a;
-	potentialNode.append_child("B").text() = it->second.b;
-	potentialNode.append_child("C").text() = it->second.c;
-	potentialNode.append_child("D").text() = it->second.d;
-	potentialNode.append_child("D0").text() = it->second.d0;
-	potentialNode.append_child("DD").text() = it->second.dd;
-	potentialNode.append_child("H").text() = it->second.h;
-	potentialNode.append_child("N").text() = it->second.n;
-	potentialNode.append_child("Rcut").text() = it->second.rCut;
-	potentialNode.append_child("R0").text() = it->second.r0;
-	potentialNode.append_child("S").text() = it->second.s;
+        element = &pt.getById(it->second.elementIdHigh);
+        potentialNode.append_child("element2").text() = element->symbol.c_str();
+        potentialNode.append_child("proton2").text() = element->protonCount;
+        potentialNode.append_child("neutron2").text() = element->neutronCount;
+        
+        potentialNode.append_child("mode").text() =
+            it->second.mode.c_str();
+        potentialNode.append_child("beta").text() = it->second.beta;
+        potentialNode.append_child("delta").text() = it->second.delta;
+        potentialNode.append_child("gamma").text() = it->second.gamma;
+        potentialNode.append_child("lambda").text() = it->second.lambda;
+        potentialNode.append_child("lambda3").text() = it->second.lambda3;
+        potentialNode.append_child("mu").text() = it->second.mu;
+        potentialNode.append_child("A").text() = it->second.a;
+        potentialNode.append_child("B").text() = it->second.b;
+        potentialNode.append_child("C").text() = it->second.c;
+        potentialNode.append_child("D").text() = it->second.d;
+        potentialNode.append_child("D0").text() = it->second.d0;
+        potentialNode.append_child("DD").text() = it->second.dd;
+        potentialNode.append_child("H").text() = it->second.h;
+        potentialNode.append_child("N").text() = it->second.n;
+        potentialNode.append_child("Rcut").text() = it->second.rCut;
+        potentialNode.append_child("R0").text() = it->second.r0;
+        potentialNode.append_child("S").text() = it->second.s;
     }
 
     CLOG(DEBUG, logName_) << counter << " Tersoff Parameters written to XML";
@@ -278,39 +279,40 @@ void XmlHandler::get(TersoffPotential &potential)
 	xmlDoc_.select_nodes("/tersoff/potential");
     pugi::xpath_node_set::const_iterator it;
 
-    for(it = tersoffNodes.begin(); it != tersoffNodes.end(); ++it, counter++){
-	pugi::xpath_node node=*it;
+    for (it = tersoffNodes.begin(); it != tersoffNodes.end(); ++it, counter++) {
+        pugi::xpath_node node=*it;
 
-	proton1 = (uint8_t)node.node().child("proton1").text().as_int(0);
-	neutron1 = (uint8_t)node.node().child("neutron1").text().as_int(0);
-	elementId1 = pt.getByProtonNeutron(proton1, neutron1).id;
+        proton1 = (uint8_t)node.node().child("proton1").text().as_int(0);
+        neutron1 = (uint8_t)node.node().child("neutron1").text().as_int(0);
+        elementId1 = pt.getByProtonNeutron(proton1, neutron1).id;
 
-	proton2 = (uint8_t)node.node().child("proton2").text().as_int(0);
-	neutron2 = (uint8_t)node.node().child("neutron2").text().as_int(0);
-	elementId2 = pt.getByProtonNeutron(proton2, neutron2).id;
-	
-	TersoffParameter parameter(elementId1, elementId2,
-		  node.node().child("name").text().as_string("undef"),
-		  node.node().child("mode").text().as_string("undef"),
-		  node.node().child("A").text().as_double(0),
-		  node.node().child("B").text().as_double(0),
-		  node.node().child("beta").text().as_double(0),
-		  node.node().child("C").text().as_double(0),
-		  node.node().child("D").text().as_double(0),
-		  node.node().child("D0").text().as_double(0),
-		  node.node().child("DD").text().as_double(0),
-		  node.node().child("delta").text().as_double(0),
-		  node.node().child("gamma").text().as_double(0),
-		  node.node().child("H").text().as_double(0),
-		  node.node().child("lambda").text().as_double(0),
-		  node.node().child("lambda3").text().as_double(0),
-		  node.node().child("mu").text().as_double(0),
-		  node.node().child("N").text().as_double(0),
-		  node.node().child("R0").text().as_double(0),
-		  node.node().child("Rcut").text().as_double(0),
-		  node.node().child("S").text().as_double(0));
-	
-	potential.add(parameter);
+        proton2 = (uint8_t)node.node().child("proton2").text().as_int(0);
+        neutron2 = (uint8_t)node.node().child("neutron2").text().as_int(0);
+        elementId2 = pt.getByProtonNeutron(proton2, neutron2).id;
+        
+        TersoffParameter parameter(elementId1, elementId2,
+              node.node().child("name").text().as_string("undef"),
+              node.node().child("comment").text().as_string("undef"),
+              node.node().child("mode").text().as_string("undef"),
+              node.node().child("A").text().as_double(0),
+              node.node().child("B").text().as_double(0),
+              node.node().child("beta").text().as_double(0),
+              node.node().child("C").text().as_double(0),
+              node.node().child("D").text().as_double(0),
+              node.node().child("D0").text().as_double(0),
+              node.node().child("DD").text().as_double(0),
+              node.node().child("delta").text().as_double(0),
+              node.node().child("gamma").text().as_double(0),
+              node.node().child("H").text().as_double(0),
+              node.node().child("lambda").text().as_double(0),
+              node.node().child("lambda3").text().as_double(0),
+              node.node().child("mu").text().as_double(0),
+              node.node().child("N").text().as_double(0),
+              node.node().child("R0").text().as_double(0),
+              node.node().child("Rcut").text().as_double(0),
+              node.node().child("S").text().as_double(0));
+        
+        potential.add(parameter);
     }
 
     CLOG(DEBUG, logName_) << counter <<" Tersoff Parameters generated from XML";
@@ -339,44 +341,43 @@ void XmlHandler::get(MaterialCollection &collection)
     pugi::xpath_node_set materialNodes =
 	xmlDoc_.select_nodes("/material-collection/material");    
 
-    for(it = materialNodes.begin(); it != materialNodes.end(); ++it, counter++){
-	MaterialComponents cations, anions;
-	pugi::xml_node materialNode=it->node();
+    for (it = materialNodes.begin(); it != materialNodes.end(); ++it, counter++) {
+        MaterialComponents cations, anions;
+        pugi::xml_node materialNode=it->node();
 
-	for(pugi::xml_node cation = materialNode.child("cation");
-	    cation; cation=cation.next_sibling("cation")){
-	    
-	    cations.push_back (std::make_tuple (
-	     pt.getByProtonNeutron(
-		      (uint8_t)cation.child("proton").text().as_int(0),
-		      (uint8_t)cation.child("neutron").text().as_int(0)
-				      ).id,
-	     cation.child("share").text().as_double(1)
-						  ) );
-	}
+        for (pugi::xml_node cation = materialNode.child("cation");
+            cation; cation=cation.next_sibling("cation")) {
+            
+            cations.push_back(std::make_tuple (
+             pt.getByProtonNeutron(
+                  (uint8_t)cation.child("proton").text().as_int(0),
+                  (uint8_t)cation.child("neutron").text().as_int(0)
+                          ).id,
+             cation.child("share").text().as_double(1)
+                              ));
+        }
 
-	for(pugi::xml_node anion = materialNode.child("anion");
-	    anion; anion=anion.next_sibling("anion")){
-	    
-	    anions.push_back (std::make_tuple (
-	     pt.getByProtonNeutron(
-		      (uint8_t)anion.child("proton").text().as_int(0),
-		      (uint8_t)anion.child("neutron").text().as_int(0)
-				      ).id,
-	      anion.child("share").text().as_double(1)
-						  ) );
-	}
+        for (pugi::xml_node anion = materialNode.child("anion");
+            anion; anion=anion.next_sibling("anion")) {
+            
+            anions.push_back (std::make_tuple (
+             pt.getByProtonNeutron(
+                  (uint8_t)anion.child("proton").text().as_int(0),
+                  (uint8_t)anion.child("neutron").text().as_int(0)
+                          ).id,
+              anion.child("share").text().as_double(1)
+                              ) );
+        }
 
-	Material material(materialNode.child("name").text().as_string("undef"),
-				   cations, anions,
-	      materialNode.child("lattice-constant").text().as_double(0),
-	      materialNode.child("c11").text().as_double(0),
-	      materialNode.child("c12").text().as_double(0),
-	      materialNode.child("c44").text().as_double(0)
-					);
-	
-	collection.add(material);
-	
+        Material material(materialNode.child("name").text().as_string("undef"),
+                       cations, anions,
+              materialNode.child("lattice-constant").text().as_double(0),
+              materialNode.child("c11").text().as_double(0),
+              materialNode.child("c12").text().as_double(0),
+              materialNode.child("c44").text().as_double(0)
+                        );
+        
+        collection.add(material);
     }
 
     CLOG(DEBUG, logName_) << counter <<" Materials generated from XML";
@@ -405,48 +406,50 @@ void XmlHandler::set(const MaterialCollection &collection)
 
     collectionNode=xmlDoc_.append_child("material-collection");
 
-    for(auto it = collection.get().begin(); it != collection.get().end();
-	++it, counter++){
+    for (auto it = collection.get().begin(); it != collection.get().end();
+        ++it, counter++) {
 
-	std::vector<double> elasticConstants = it->getElasticConstants();
-	
-	materialNode=collectionNode.append_child("material");
+        std::vector<double> elasticConstants = it->getElasticConstants();
+        
+        materialNode=collectionNode.append_child("material");
 
-	materialNode.append_child("name").text() = it->getName().c_str();
-	materialNode.append_child("lattice-constant").text() =
-	    it->getLatticeConstant();
-	
-	materialNode.append_child("c11").text() = elasticConstants[0];
-	materialNode.append_child("c12").text() = elasticConstants[1];
-	materialNode.append_child("c44").text() = elasticConstants[2];
+        materialNode.append_child("name").text() = it->getName().c_str();
+        materialNode.append_child("lattice-constant").text() =
+            it->getLatticeConstant();
+        
+        materialNode.append_child("c11").text() = elasticConstants[0];
+        materialNode.append_child("c12").text() = elasticConstants[1];
+        materialNode.append_child("c44").text() = elasticConstants[2];
 
-	component = it->getCations();
-    
-    double lastShare=0;
-	for (auto it2 = component.begin();
-         it2 != component.end(); ++it2){
-        auto element = pt.getById(std::get<0>(*it2));
-	    workNode=materialNode.append_child("cation");
-	    workNode.append_child("element").text() = element.symbol.c_str();
-	    workNode.append_child("proton").text() = element.protonCount;
-	    workNode.append_child("neutron").text() = element.neutronCount;
-	    workNode.append_child("share").text() = std::get<1>(*it2)-lastShare;
-        lastShare = std::get<1>(*it2);
-	}
+        component = it->getCations();
+        
+        double lastShare=0;
 
-	component = it->getAnions();
+        for (auto it2 = component.begin();
+             it2 != component.end(); ++it2) {
+            auto element = pt.getById(std::get<0>(*it2));
+            workNode=materialNode.append_child("cation");
+            workNode.append_child("element").text() = element.symbol.c_str();
+            workNode.append_child("proton").text() = element.protonCount;
+            workNode.append_child("neutron").text() = element.neutronCount;
+            workNode.append_child("share").text() = std::get<1>(*it2)-lastShare;
+            lastShare = std::get<1>(*it2);
+        }
 
-    lastShare=0;
-	for (auto it2 = component.begin(); it2 != component.end(); ++it2){
-        auto element = pt.getById(std::get<0>(*it2));
-	    workNode=materialNode.append_child("anion");
-	    workNode.append_child("element").text() = element.symbol.c_str();
-	    workNode.append_child("proton").text() = element.protonCount;
-	    workNode.append_child("neutron").text() = element.neutronCount;
-	    workNode.append_child("share").text() = std::get<1>(*it2)-lastShare;
-        lastShare = std::get<1>(*it2);
-	}
-	
+        component = it->getAnions();
+
+        lastShare=0;
+
+        for (auto it2 = component.begin(); it2 != component.end(); ++it2) {
+            auto element = pt.getById(std::get<0>(*it2));
+            workNode=materialNode.append_child("anion");
+            workNode.append_child("element").text() = element.symbol.c_str();
+            workNode.append_child("proton").text() = element.protonCount;
+            workNode.append_child("neutron").text() = element.neutronCount;
+            workNode.append_child("share").text() = std::get<1>(*it2)-lastShare;
+            lastShare = std::get<1>(*it2);
+        }
+        
     }
 
     CLOG(DEBUG, logName_) << counter <<" Materials written to XML";
@@ -470,7 +473,7 @@ void XmlHandler::set(const Lattice &lattice)
     int counter=0;
     
     // remove already existing nodes with the same name
-    while(xmlDoc_.remove_child("lattice")) ;
+    while(xmlDoc_.remove_child("lattice"));
     
     latticeNode = xmlDoc_.append_child("lattice");
 
@@ -480,43 +483,41 @@ void XmlHandler::set(const Lattice &lattice)
     workNode.append_child("y").text() = size[1];
     workNode.append_child("z").text() = size[2];
 
-    for (auto atom: lattice.getAtomList()){
+    for (auto atom: lattice.getAtomList()) {
+        Vector3D<spaceType> position = atom->getPosition();
+        Vector3D<indexType> index = atom->getIndex();
+        workNode=latticeNode.append_child("atom");
+            
+        /*
+        // export as node attributes
+        atomNode.append_attribute("ID") = atom->getElementId();
+        atomNode.append_attribute("i") = i;
+        atomNode.append_attribute("j") = j;
+        atomNode.append_attribute("k") = k;
+        atomNode.append_attribute("x") = pos[0];
+        atomNode.append_attribute("y") = pos[1];
+        atomNode.append_attribute("z") = pos[2];
+        */
 
-	Vector3D<spaceType> position = atom->getPosition();
-	Vector3D<indexType> index = atom->getIndex();
-	workNode=latticeNode.append_child("atom");
-		
-	/*
-	// export as node attributes
-	atomNode.append_attribute("ID") = atom->getElementId();
-	atomNode.append_attribute("i") = i;
-	atomNode.append_attribute("j") = j;
-	atomNode.append_attribute("k") = k;
-	atomNode.append_attribute("x") = pos[0];
-	atomNode.append_attribute("y") = pos[1];
-	atomNode.append_attribute("z") = pos[2];
-	*/
+        const Element &element = pt.getById(atom->getElementId());
+        // export as PCDATA nodes
+        workNode.append_child("element").text() = element.symbol.c_str();
+        workNode.append_child("proton").text() = element.protonCount;
+        workNode.append_child("neutron").text() = element.neutronCount;
+        workNode.append_child("material").text() =
+            atom->getMaterial()->getName().c_str();
+        workNode.append_child("modified").text() = atom->wasModified();
+        workNode.append_child("modification-index").text() = atom->getModificationOrder();
+        workNode.append_child("state").text() = atom->getState().to_string().c_str();
 
-	const Element &element = pt.getById(atom->getElementId());
-	// export as PCDATA nodes
-	workNode.append_child("element").text() = element.symbol.c_str();
-	workNode.append_child("proton").text() = element.protonCount;
-	workNode.append_child("neutron").text() = element.neutronCount;
-	workNode.append_child("material").text() =
-	    atom->getMaterial()->getName().c_str();
-	workNode.append_child("modified").text() = atom->wasModified();
-    workNode.append_child("modification-index").text() = atom->getModificationOrder();
-    workNode.append_child("state").text() = atom->getState().to_string().c_str();
+        workNode.append_child("i").text() = index[0];
+        workNode.append_child("j").text() = index[1];
+        workNode.append_child("k").text() = index[2];
+        workNode.append_child("x").text() = position[0];
+        workNode.append_child("y").text() = position[1];
+        workNode.append_child("z").text() = position[2];
 
-	workNode.append_child("i").text() = index[0];
-	workNode.append_child("j").text() = index[1];
-	workNode.append_child("k").text() = index[2];
-	workNode.append_child("x").text() = position[0];
-	workNode.append_child("y").text() = position[1];
-	workNode.append_child("z").text() = position[2];
-
-	counter++;
-
+        counter++;
     }
 
     CLOG(DEBUG, logName_) << counter <<" Atoms written to XML";
@@ -550,31 +551,30 @@ void XmlHandler::get(Lattice &lattice, const MaterialCollection &materials) cons
 	xmlDoc_.select_nodes("/lattice/atom");
     pugi::xpath_node_set::const_iterator it;
 
-    for(it = atomNodes.begin(); it != atomNodes.end(); ++it, counter++){
-	pugi::xpath_node atom=*it;
+    for (it = atomNodes.begin(); it != atomNodes.end(); ++it, counter++) {
+        pugi::xpath_node atom=*it;
 
-	position[0] = atom.node().child("x").text().as_double(0);
-	position[1] = atom.node().child("y").text().as_double(0);
-	position[2] = atom.node().child("z").text().as_double(0);
+        position[0] = atom.node().child("x").text().as_double(0);
+        position[1] = atom.node().child("y").text().as_double(0);
+        position[2] = atom.node().child("z").text().as_double(0);
 
-	index[0] = (indexType)atom.node().child("i").text().as_int(0);
-	index[1] = (indexType)atom.node().child("j").text().as_int(0);
-	index[2] = (indexType)atom.node().child("k").text().as_int(0);
+        index[0] = (indexType)atom.node().child("i").text().as_int(0);
+        index[1] = (indexType)atom.node().child("j").text().as_int(0);
+        index[2] = (indexType)atom.node().child("k").text().as_int(0);
 
-	uint8_t proton = (uint8_t)atom.node().child("proton").text().as_int(0);
-	uint8_t neutron =(uint8_t)atom.node().child("neutron").text().as_int(0);
-	std::string name = atom.node().child("material").text().as_string("");
-	bool modified = atom.node().child("modified").text().as_bool(false);
-    uint32_t modificationIndex = atom.node().child("modification-index").text().as_int(0);
-    std::string state = atom.node().child("state").text().as_string("");
+        uint8_t proton = (uint8_t)atom.node().child("proton").text().as_int(0);
+        uint8_t neutron =(uint8_t)atom.node().child("neutron").text().as_int(0);
+        std::string name = atom.node().child("material").text().as_string("");
+        bool modified = atom.node().child("modified").text().as_bool(false);
+        uint32_t modificationIndex = atom.node().child("modification-index").text().as_int(0);
+        std::string state = atom.node().child("state").text().as_string("");
 
-	lattice(index) =
-	    new Atom(pt.getByProtonNeutron(proton,neutron).id, position,
-		     index, &(materials.getByName(name)), modified, false, modificationIndex, std::bitset<AtomState::StateCount>(state));
+        lattice(index) =
+            new Atom(pt.getByProtonNeutron(proton,neutron).id, position,
+                 index, &(materials.getByName(name)), modified, false, modificationIndex, std::bitset<AtomState::StateCount>(state));
 
-	CLOG(TRACE, logName_) << name << " Material Name " <<
-	    materials.getByName(name).getName();
-
+        CLOG(TRACE, logName_) << name << " Material Name " <<
+            materials.getByName(name).getName();
     }
 
     CLOG(DEBUG, logName_) << counter <<" Atoms generated from XML";
@@ -596,7 +596,7 @@ void XmlHandler::set(const SimulationBox &simbox)
     pugi::xml_node simboxNode;
 
     // remove already existing nodes with the same name
-    while(xmlDoc_.remove_child("simbox")) ;
+    while(xmlDoc_.remove_child("simbox"));
     
     simboxNode = xmlDoc_.append_child("simbox");
     simboxNode.append_child("description").text() = simbox.getDescription().c_str();
@@ -664,8 +664,7 @@ void XmlHandler::set(const CompositionInfo &composition)
     
     compositionNode = xmlDoc_.append_child("composition");
 
-    for (auto i=0; i<composition.getLayerCount(); i++){
-
+    for (auto i=0; i<composition.getLayerCount(); i++) {
         LayerCompositionInfo layer = composition.getLayer(i);
         layerNode=compositionNode.append_child("layer");
         layerNode.append_child("index").text() = i;
@@ -701,18 +700,18 @@ void XmlHandler::get(std::vector<CompositionInfo> &compositions) const
 
     CLOG(TRACE, logName_) << "generating CompositionInfos from XML";
 
-	for(pugi::xml_node compNode = xmlDoc_.child("composition");
-	    compNode; compNode=compNode.next_sibling("composition")){
+	for (pugi::xml_node compNode = xmlDoc_.child("composition");
+	    compNode; compNode=compNode.next_sibling("composition")) {
 
         CompositionInfo comp;
         
-        for(pugi::xml_node layerNode = compNode.child("layer");
-            layerNode; layerNode=layerNode.next_sibling("layer")){
+        for (pugi::xml_node layerNode = compNode.child("layer");
+            layerNode; layerNode=layerNode.next_sibling("layer")) {
 
             LayerCompositionInfo layer;
 
-            for(pugi::xml_node elementNode = layerNode.child("element");
-                elementNode; elementNode=elementNode.next_sibling("element")){
+            for (pugi::xml_node elementNode = layerNode.child("element");
+                elementNode; elementNode=elementNode.next_sibling("element")) {
 
                 auto key = std::make_tuple(elementNode.child("material").text().as_string("undef"),
                                            (elementType)elementNode.child("id").text().as_int(0) );
@@ -741,8 +740,8 @@ int XmlHandler::readEntries(Journal<int> &journal, pugi::xml_node entry) const
 {
     int counter=0;
     
-    for(; entry; entry = entry.next_sibling("entry"), ++counter){
-	journal.add(entry.text().as_int(0));
+    for (; entry; entry = entry.next_sibling("entry"), ++counter) {
+        journal.add(entry.text().as_int(0));
     }
 
     return counter;
@@ -757,8 +756,8 @@ int XmlHandler::readEntries(Journal<double> &journal, pugi::xml_node entry)const
 {
     int counter=0;
     
-    for(; entry; entry = entry.next_sibling("entry"), ++counter){
-	journal.add(entry.text().as_double(0));
+    for (; entry; entry = entry.next_sibling("entry"), ++counter) {
+        journal.add(entry.text().as_double(0));
     }
 
     return counter;
@@ -774,8 +773,8 @@ int XmlHandler::readEntries(Journal<std::string> &journal,
 {
     int counter=0;
     
-    for(; entry; entry = entry.next_sibling("entry"), ++counter){
-	journal.add(entry.text().as_string(""));
+    for (; entry; entry = entry.next_sibling("entry"), ++counter) {
+        journal.add(entry.text().as_string(""));
     }
 
     return counter;
@@ -791,7 +790,7 @@ int XmlHandler::readEntries(Journal<UDTuple> &journal,
 {
     int counter = 0;
 
-    for(; entry; entry = entry.next_sibling("entry"), ++counter){
+    for (; entry; entry = entry.next_sibling("entry"), ++counter) {
         journal.add(std::make_tuple(entry.child("U").text().as_ullong(), entry.child("D").text().as_double(0)));
     }
 
@@ -810,9 +809,9 @@ int XmlHandler::writeEntries(const Journal<std::string> &journal,
 {
     int counter = 0;
 
-    for (auto entry: journal.getEntries()){
-	journalNode.append_child("entry").text() = entry.c_str();
-	counter ++;
+    for (auto entry: journal.getEntries()) {
+        journalNode.append_child("entry").text() = entry.c_str();
+        counter ++;
     }
 
     return counter;
@@ -826,11 +825,11 @@ int XmlHandler::writeEntries(const Journal<UDTuple> &journal,
     int counter = 0;
     pugi::xml_node tmpNode;
 
-    for (auto entry: journal.getEntries()){
-    tmpNode = journalNode.append_child("entry");
-    tmpNode.append_child("U").text() = std::get<0>(entry);
-    tmpNode.append_child("D").text() = std::get<1>(entry);
-    counter++;
+    for (auto entry: journal.getEntries()) {
+        tmpNode = journalNode.append_child("entry");
+        tmpNode.append_child("U").text() = std::get<0>(entry);
+        tmpNode.append_child("D").text() = std::get<1>(entry);
+        counter++;
     }
 
     return counter;
@@ -852,26 +851,25 @@ void XmlHandler::get(Configuration &config) const
 
     nodeSet = xmlDoc_.select_nodes("/config/material/cation");    
 
-    for(it = nodeSet.begin(); it != nodeSet.end(); ++it){
-	pugi::xml_node cationNode=(*it).node();
+    for (it = nodeSet.begin(); it != nodeSet.end(); ++it) {
+        pugi::xml_node cationNode=(*it).node();
 
-	config.cations.push_back( std::make_tuple(
-		cationNode.child("element").text().as_string("undef"),
-		cationNode.child("share").text().as_double(0) )
-			   );
+        config.cations.push_back( std::make_tuple(
+            cationNode.child("element").text().as_string("undef"),
+            cationNode.child("share").text().as_double(0) )
+                   );
     }
     
     nodeSet = xmlDoc_.select_nodes("/config/material/anion");    
 
-    for(it = nodeSet.begin(); it != nodeSet.end(); ++it){
-	pugi::xml_node anionNode=(*it).node();
+    for (it = nodeSet.begin(); it != nodeSet.end(); ++it) {
+        pugi::xml_node anionNode=(*it).node();
 
-	config.anions.push_back( std::make_tuple(
-		anionNode.child("element").text().as_string("undef"),
-		anionNode.child("share").text().as_double(0) )
-			   );
+        config.anions.push_back( std::make_tuple(
+            anionNode.child("element").text().as_string("undef"),
+            anionNode.child("share").text().as_double(0) )
+                   );
     }
-
 
     workNode = configNode.child("material");
     config.materialName = workNode.child("name").text().as_string("undef");
@@ -957,7 +955,7 @@ void XmlHandler::get(Configuration &config) const
 
     nodeSet = xmlDoc_.select_nodes("/config/switch");    
 
-    for(it = nodeSet.begin(); it != nodeSet.end(); ++it){
+    for (it = nodeSet.begin(); it != nodeSet.end(); ++it) {
         std::string text((*it).node().text().as_string(""));
         
         if (text == "extend"){

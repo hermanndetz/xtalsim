@@ -34,6 +34,8 @@ class TersoffParameter{
 
     //! Name of parameter set.
     std::string name;
+    //! Comment (e.g. to specify origin of parameter set)
+    std::string comment;
     //! Mode of parameter set. Valid options are S/??.
     std::string mode;
     //! lower ID of involved elements
@@ -45,7 +47,7 @@ class TersoffParameter{
     
     //! Constructor
     TersoffParameter(elementType elementId1, elementType elementId2,
-		   std::string _name, std::string _mode,
+		   std::string _name, std::string _comment, std::string _mode,
 		   double _a, double _b, double _beta,double _c,
 		   double _d, double _d0, double _dd, double _delta,
 		   double _gamma, double _h, double _lambda, double _lambda3,
