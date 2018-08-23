@@ -48,6 +48,12 @@ make
 make docs # optional, requires doxygen
 ```
 
+Optional:
+CMake includes the file _CMakeUser.txt_, if found in the root directory of xtalsim. This can be used to change the default path of configuration files for the logger.
+```python
+add_definitions(_DEASYLOGGING_CONF_DIR="path_to_dir_containing_files")
+```
+
 ## Getting started
 
 The [wiki](https://github.com/hermanndetz/xtalsim/wiki) provides example simulations as well as a detailed description of the individual programs and file formats.

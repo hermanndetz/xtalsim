@@ -262,7 +262,11 @@ int main (int argc, char *argv[])
     
     // Load default configuration from file, adapt it according to given command
     // line parameters and set it as default for all loggers.
-    el::Configurations conf("../input/easylogging++.conf");
+#if defined(EASYLOGGING_CONF_DIR)
+    el::Configurations conf(EASYLOGGING_CONF_DIR "/easylogging++.conf");
+#else
+    el::Configurations conf("./input/easylogging++.conf");
+#endif
     
     el::Loggers::addFlag(el::LoggingFlag::ColoredTerminalOutput);
     // To reduce the maintenance effort new loggers are automatically added.
@@ -336,7 +340,11 @@ int main (int argc, char *argv[])
     el::Loggers::setDefaultConfigurations(conf, true);
 
     // Load logger specific settings.
-    el::Loggers::configureFromGlobal("../input/loggers.conf");
+#if defined(EASYLOGGING_CONF_DIR)
+    el::Loggers::configureFromGlobal(EASYLOGGING_CONF_DIR "/loggers.conf");
+#else
+    el::Loggers::configureFromGlobal("./input/loggers.conf");
+#endif
     
     CLOG(TRACE, programName) << "starting " << programName;
 

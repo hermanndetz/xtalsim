@@ -20,3 +20,9 @@ bin/*
 doc/*
 work/*
 
+# ignore this file as it contains user-defined settins that can be used to 
+# override default settings in the git repository
+CMakeUser.txt
+
+# ignore this file since it's generated during the build process
+compile_commands.json
