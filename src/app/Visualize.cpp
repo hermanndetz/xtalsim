@@ -106,6 +106,14 @@ int main (int argc, char *argv[])
 		       "If specified log messages are also written into "
 		       "this file.", false, "", "FILE");
 
+    TCLAP::ValueArg<std::string> clpTitle("t", "title",
+		       "Used for window title.",
+		       false, "", "VAL");
+
+    TCLAP::SwitchArg clpEmbedTitle("", "embed-title",
+		       "Embeds the title into the view (to enable saving).",
+		       false);
+
     TCLAP::ValueArg<indexType> clpNeighborLayers("", "neighbor-layers",
 		       "All atoms at most NUM atomic layers away are considered "
 		       "neighbors of a single atom, "
@@ -224,6 +232,8 @@ int main (int argc, char *argv[])
         cmd.add(clpPeriodicTableFile);
         cmd.add(clpMaterialFile);
         cmd.add(clpLogFile);
+        cmd.add(clpTitle);
+        cmd.add(clpEmbedTitle);
         cmd.add(clpVerbose);
         cmd.add(clpNeighborLayers);
         cmd.add(clpInterfaceIndex);
@@ -236,11 +246,11 @@ int main (int argc, char *argv[])
         cmd.add(clpModifiedNegative);
         cmd.add(clpModificationIndexMax);
         cmd.add(clpModificationAnimation);
-	cmd.add(clpCameraFocalPoint);
-	cmd.add(clpCameraDirectionX);
-	cmd.add(clpCameraDirectionY);
-	cmd.add(clpCameraDirectionZ);
-	cmd.add(clpCameraZoom);
+        cmd.add(clpCameraFocalPoint);
+        cmd.add(clpCameraDirectionX);
+        cmd.add(clpCameraDirectionY);
+        cmd.add(clpCameraDirectionZ);
+        cmd.add(clpCameraZoom);
         cmd.add(clpAnimationFilePrefix);
         cmd.add(clpAnimationStep);
         cmd.add(clpScreenshotFile);
@@ -530,10 +540,10 @@ int main (int argc, char *argv[])
 
         if (clpVisualizeStrain.getValue() == true) {
             sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						 materialCollection, config, strainField);
+						 materialCollection, config, strainField, true, clpTitle.getValue(), clpEmbedTitle.getValue());
         } else
             sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						 materialCollection, config);
+						 materialCollection, config, nullptr, true, clpTitle.getValue(), clpEmbedTitle.getValue());
 
         if (config.screenshotFileName != "")
             sbr->saveImage(config.screenshotFileName);
@@ -554,11 +564,15 @@ int main (int argc, char *argv[])
             config.modificationIndexMax = i;
 
             if (clpVisualizeStrain.getValue() == true) {
+                // this call does not need the title argument since it's for
+                // an animation and the window title is not saved there
                 sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						     materialCollection, config, strainField, false);
+						     materialCollection, config, strainField, false, clpTitle.getValue(), clpEmbedTitle.getValue());
             } else
+                // this call does not need the title argument since it's for
+                // an animation and the window title is not saved there
                 sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						     materialCollection, config, nullptr, false);
+						     materialCollection, config, nullptr, false, clpTitle.getValue(), clpEmbedTitle.getValue());
 
             sbr->saveImage(screenshotFilewithIndex);
             sbr->clear();
@@ -589,10 +603,10 @@ int main (int argc, char *argv[])
 	    
             if (clpVisualizeStrain.getValue() == true) {
                 sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						     materialCollection, config, strainField, false);
+						     materialCollection, config, strainField, false, clpTitle.getValue(), clpEmbedTitle.getValue());
             } else
                 sbr->renderPerspectiveWithInterfaces(*simbox, ifDefs,
-						     materialCollection, config, nullptr, false);
+						     materialCollection, config, nullptr, false, clpTitle.getValue(), clpEmbedTitle.getValue());
 
             sbr->saveImage(fileName.str());
             sbr->clear();

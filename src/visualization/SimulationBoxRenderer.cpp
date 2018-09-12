@@ -1030,7 +1030,9 @@ void SimulationBoxRenderer::renderPerspectiveWithInterfaces (SimulationBox &simb
                                                              const MaterialCollection &materials,
                                                              const Configuration &config,
                                                              std::shared_ptr<Field3D<double>> strainField,
-                                                             bool persist) {
+                                                             bool persist,
+                                                             const std::string title,
+                                                             const bool embedTitle) {
     config_ = config;
     simbox_ = &simbox;
     materials_ = &materials;
@@ -1082,7 +1084,23 @@ void SimulationBoxRenderer::renderPerspectiveWithInterfaces (SimulationBox &simb
     KeyPressInteractorStyle::SafeDownCast(renderWindowInteractor_->
                                           GetInteractorStyle())->setCommandLine(textActor);
 
+    if (embedTitle == true) {
+        vtkSmartPointer<vtkRenderer> titleRenderer = vtkSmartPointer<vtkRenderer>::New();
+
+        vtkSmartPointer<vtkTextActor> titleLabel = vtkSmartPointer<vtkTextActor>::New();
+        titleLabel->SetInput(title.c_str());
+        titleLabel->SetDisplayPosition(320,835);
+        titleLabel->GetTextProperty()->SetColor(color);
+        titleLabel->GetTextProperty()->SetFontSize(20);
+
+        titleRenderer->SetViewport(0.25, 0.95, 0.75, 1.0);
+        titleRenderer->SetBackground(1.0, 1.0, 1.0);
+        titleRenderer->AddActor(titleLabel);
+        renderWindow_->AddRenderer(titleRenderer);
+    }
+
     renderWindow_->SetSize(windowWidth_,windowHeight_);
+    renderWindow_->SetWindowName(title.c_str());
     renderWindow_->Render();
 
     if (persist == true) {
