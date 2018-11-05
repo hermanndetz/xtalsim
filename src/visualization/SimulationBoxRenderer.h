@@ -156,7 +156,9 @@ public:
                                           const MaterialCollection &materials,
                                           const Configuration &config,
                                           std::shared_ptr<Field3D<double>> strainField = nullptr,
-                                          bool persist=true);
+                                          bool persist=true,
+                                          const std::string title="",
+                                          const bool embedTitle=false);
 
 
     void resetCamera(vtkRenderer *renderer);
