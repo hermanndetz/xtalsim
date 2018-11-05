@@ -9,10 +9,10 @@
 
 require 'fileutils'
 require 'optparse'
-require './ioutils.rb'
-require './xtalsimconfig.rb'
-require './xtalsim.rb'
-require './xtalsimcli.rb'
+require './scripts/ioutils.rb'
+require './scripts/xtalsim.rb'
+require './scripts/xtalsimcli.rb'
+require './scripts/xtalsimconfig.rb'
 
 #-------------------------------------------------------------------------------
 # Prepare core objects
@@ -39,12 +39,14 @@ end
 
 if xtalsim.get_file(:settings).to_s.empty? == false
     require xtalsim.get_file :settings
+
+    # update path in ConfigFiles
+    ConfigFiles.instance.set_base_path($xtalsimInputDir)
 end
 
 if xtalsim.user_set_file? == false
     xtalsim.prepare_work_dir
 end
-
 
 #-------------------------------------------------------------------------------
 # Step through tasks
@@ -67,7 +69,7 @@ if xtalsim.task_enabled? :lattice
 
         puts "Layer #{l[:name]}".blue
 
-        cmd = "../bin/LatticeGenerator"
+        cmd = "#{$xtalsimBinDir}/LatticeGenerator"
         cmd << " #{$inFile}"
         cmd << " -o #{fileName}.xml"
         cmd << " -n #{tmpName}"
@@ -109,7 +111,7 @@ if xtalsim.task_enabled? :interface
         puts "Optimizing interface at layer #{interface[:layer]} with height #{interface[:height]} using #{interface[:cation]} and #{interface[:anion]}".blue
 
         # start index and stop index
-        cmd = "../bin/InterfaceGenerator"
+        cmd = "#{$xtalsimBinDir}/InterfaceGenerator"
         cmd << " -i #{fileName}.xml"
         cmd << " -o #{fileName}.xml"
         cmd << " -c #{interface[:cation]}"
@@ -153,7 +155,7 @@ end
 #-------------------------------------------------------------------------------
 
 if xtalsim.task_enabled? :optimize
-    cmd = "../bin/Optimizer"
+    cmd = "#{$xtalsimBinDir}/Optimizer"
     cmd << " -i #{fileName}.xml"
     cmd << " -o #{fileName}.xml"
     cmd << " --xyz #{xtalsim.get_project_dir}"
@@ -183,7 +185,7 @@ end
 #-------------------------------------------------------------------------------
 
 if xtalsim.task_enabled? :render
-    if File.exists?("../bin/Visualize")
+    if File.exists?("../bin//Visualize")
         fileParams = ConfigFiles.instance.get_file_parameters("config","periodic","materials")
         puts "File params: #{fileParams}"
 

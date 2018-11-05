@@ -8,7 +8,7 @@
 
 
 require 'singleton'
-require './xtalsimconfig.rb'
+require './scripts/xtalsimconfig.rb'
 
 #-------------------------------------------------------------------------------
 # This class parses command line options for the XtalSim Shell.

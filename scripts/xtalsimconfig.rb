@@ -11,15 +11,16 @@ class ConfigFiles
     include Singleton
 
     @mFileName = ""
+    @mBasePath = ""
 
     def initialize
         @mEntries = {
-            "config" => {"param" => "--config", "path" => "../input/config.xml"},
-            "periodic" => {"param" => "--periodic-table", "path" => "../input/elements.xml"},
-            "tersoff" => {"param" => "--tersoff", "path" => "../input/tersoff.xml"},
-            "materials" => {"param" => "--material-file", "path" => "../input/materials.xml"},
-            "log" => {"param" => "--log", "path" => "#{@mFileName}.log"},
-            "journal" => {"param" => "-j", "path" => "#{@mFileName}"}
+		"config" => {"param" => "--config", "path" => "config.xml", :type => :user},
+            "periodic" => {"param" => "--periodic-table", "path" => "elements.xml", :type => :input},
+            "tersoff" => {"param" => "--tersoff", "path" => "tersoff.xml", :type => :input},
+            "materials" => {"param" => "--material-file", "path" => "materials.xml", :type => :input},
+            "log" => {"param" => "--log", "path" => "#{@mFileName}.log", :type => :output},
+            "journal" => {"param" => "-j", "path" => "#{@mFileName}", :type => :output}
         }
     end
 
@@ -37,10 +38,18 @@ class ConfigFiles
         paramString = ""
 
         args.each do |item|
-            paramString << " #{@mEntries[item]["param"]} #{@mEntries[item]["path"]}"
+			if @mEntries[item][:type] == :input
+				paramString << " #{@mEntries[item]["param"]} #{@mBasePath}/#{@mEntries[item]["path"]}"
+			else
+				paramString << " #{@mEntries[item]["param"]} #{@mEntries[item]["path"]}"
+			end
         end
 
         return paramString
+    end
+
+    def set_base_path (path = "")
+		@mBasePath = path
     end
 end
 
