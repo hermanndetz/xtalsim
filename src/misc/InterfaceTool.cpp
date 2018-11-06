@@ -191,7 +191,7 @@ void InterfaceTool::createOptimizedRoughness(
         xmlEJournal.load(journalPreamble + "ifEJournal.xml");
         xmlEJournal.get(metricJournal_, journalName.str().c_str());
     } catch (XmlException e) {
-
+        CLOG(ERROR, logName_) << "Could not load journal file: " << journalPreamble + "ifEJournal.xml";
     }
     
     materialPointer = & simbox_->getMaterials().getByNameOrAdd(material);
@@ -286,9 +286,9 @@ void InterfaceTool::createOptimizedRoughness(
             }
 
         
-            if (metric < bestMetric) {
+            if (tmpMetric < bestMetric) {
                 bestConfiguration = lattice.backupAtoms(range);
-                bestMetric = metric;
+                bestMetric = tmpMetric;
                 bestIndex = index;
                 modAtomBestConfiguration = atom;
             }
@@ -306,7 +306,7 @@ void InterfaceTool::createOptimizedRoughness(
         CLOG(DEBUG, logName_) << "Found best position at " << bestIndex.str();
         posJournal_.add("Best position at " + bestIndex.str());
         metricJournal_.add(std::make_tuple(atomCount,bestMetric/simbox_->getAtomCount(interfaceRange)));
-        
+
         lattice.restoreAtoms(bestConfiguration);
         atomCount++;
 

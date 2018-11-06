@@ -28,7 +28,7 @@ void XmlHandler::clear(void)
 //------------------------------------------------------------------------------
 
 //! Drops internal DOM structure and creates new one from specified file. The
-//! result code is catched and translated into Exception-based notification.
+//! result code is caught and translated into Exception-based notification.
 //! \param fileName Path to file that shall be read.
 //! \throws XmlException
 void XmlHandler::load(const std::string &fileName)
