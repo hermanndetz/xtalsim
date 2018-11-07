@@ -235,7 +235,12 @@ int main (int argc, char *argv[])
     CsvHandler outputHandler = CsvHandler(config.outputFileName, "CSV File");
 
     for (auto journalName: journalNames) {
-        inputHandler.get(journal,journalName);
+        try {
+            inputHandler.get(journal,journalName);
+        } catch (XmlException) {
+            continue;
+        }
+
         outputHandler += journal;
     }
 

@@ -80,9 +80,9 @@ void XmlHandler::get(Journal<T> &journal, const std::string name) const
     }
 
     if (journalFound == false){
-	CLOG(WARNING, logName_) << "Journal with name " << name <<" not found!";
-	throw XmlException("Journal with name " + name + " not found!", "",
-			   XmlException::Id::Journal);
+        CLOG(WARNING, logName_) << "Journal with name " << name <<" not found!";
+        throw XmlException("Journal with name " + name + " not found!", "",
+                   XmlException::Id::Journal);
     }
 
     CLOG(DEBUG, logName_) << counter << " Journal entries generated from XML";

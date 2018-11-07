@@ -207,6 +207,7 @@ void InterfaceTool::createOptimizedRoughness(
     range.apply={true,true,true};
     uint32_t atomCheckStep = atomsToDeployCount/10;
     uint32_t atomCheckCount = atomCheckStep;
+
     while (atomCount < atomsToDeployCount) {
 
         Vector3D<indexType> bestIndex;
@@ -293,13 +294,10 @@ void InterfaceTool::createOptimizedRoughness(
                 modAtomBestConfiguration = atom;
             }
 
-            //! \attention Debug output temporarily commented out!
             lattice.restoreAtoms(originalConfiguration);
-
             unsuitedPositionsCount_=0;
             //move from current position at least one step
             index = moveAtom(index, interfaceRange, direction, materialPointer);
-            //! \attention Debug output temporarily commented out!
             posJournal_.add("moveAtom: chose " + index.str());
         }
 

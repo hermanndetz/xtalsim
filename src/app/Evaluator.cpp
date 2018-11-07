@@ -204,40 +204,38 @@ int main (int argc, char *argv[])
     examples.push_back("EXECNAME --config foo.xml\n"
 		       "Read parameters from configuration file foo.xml.");
     
-    try{
+    try {
+        TCLAP::CmdLine cmd("Calculate strain of structure and export data.",
+                   examples, ' ', "1.0");
 
-	TCLAP::CmdLine cmd("Calculate strain of structure and export data.",
-		       examples, ' ', "1.0");
+        cmd.add(clpInFile);
+        cmd.add(clpLogFile);
+        cmd.add(clpConfigFile);
+        cmd.add(clpMaterialFile);
+        cmd.add(clpPeriodicTableFile);
+        cmd.add(clpEvaluationMode);
+        cmd.add(clpAtomState);
+        cmd.add(clpFilterElements);
+        cmd.add(clpInterpolate);
+        cmd.add(clpNeighborRadius);
+        cmd.add(clpNeighborLayers);
+        cmd.add(clpLayerIndex);
+        cmd.add(clpVerbose);
+        cmd.add(clpOutputPreamble);
+        cmd.add(clpOutputFile);
+        cmd.add(clpOutputFormat);
+        cmd.add(clpQuiet);
+        cmd.add(clpQQuiet);
 
-	cmd.add(clpInFile);
-	cmd.add(clpLogFile);
-	cmd.add(clpConfigFile);
-	cmd.add(clpMaterialFile);
-	cmd.add(clpPeriodicTableFile);
-    cmd.add(clpEvaluationMode);
-    cmd.add(clpAtomState);
-    cmd.add(clpFilterElements);
-    cmd.add(clpInterpolate);
-    cmd.add(clpNeighborRadius);
-    cmd.add(clpNeighborLayers);
-    cmd.add(clpLayerIndex);
-	cmd.add(clpVerbose);
-	cmd.add(clpOutputPreamble);
-    cmd.add(clpOutputFile);
-    cmd.add(clpOutputFormat);
-	cmd.add(clpQuiet);
-    cmd.add(clpQQuiet);
-	
-	cmd.parse( argc, argv );
+        cmd.parse( argc, argv );
 
-	programName = cmd.getProgramName();
-	std::size_t position = programName.find_last_of("/\\");
-	programName = programName.substr(position+1);	
-    }
-    catch (TCLAP::ArgException &e){
-	std::cerr << "error: " << e.error() << " for arg " << e.argId() <<
-		  std::endl;
-	exit(ErrorCode::TCLAP);
+        programName = cmd.getProgramName();
+        std::size_t position = programName.find_last_of("/\\");
+        programName = programName.substr(position+1);
+    } catch (TCLAP::ArgException &e){
+        std::cerr << "error: " << e.error() << " for arg " << e.argId() <<
+              std::endl;
+        exit(ErrorCode::TCLAP);
     }
 
     //-------------------------------------------------------------------------
@@ -290,39 +288,38 @@ int main (int argc, char *argv[])
     JsonHandler jsonHandler;
     FileHandler *fileHandler;
     
-    if (clpConfigFile.getValue() != ""){
-	try{
-	    fileHandler=getHandler(clpConfigFile.getValue(),
-				   xmlHandler, jsonHandler);
-	    fileHandler->load(clpConfigFile.getValue());
-	    fileHandler->get(config);
-	}
-	catch(XmlException &e){
-	    std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
-	    bailout("Error while reading config file", ErrorCode::XML);
-	}	
-    }    
+    if (clpConfigFile.getValue() != "") {
+        try {
+            fileHandler=getHandler(clpConfigFile.getValue(),
+                       xmlHandler, jsonHandler);
+            fileHandler->load(clpConfigFile.getValue());
+            fileHandler->get(config);
+        } catch (XmlException &e) {
+            std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
+            bailout("Error while reading config file", ErrorCode::XML);
+        }
+    }
 
     if (clpLogFile.getValue() != "")
         config.logFileName = clpLogFile.getValue();
 
     if (config.logFileName != ""){
-	conf.set(el::Level::Global, el::ConfigurationType::ToFile, "true");
-	conf.set(el::Level::Global, el::ConfigurationType::Filename,
-		 config.logFileName);
+        conf.set(el::Level::Global, el::ConfigurationType::ToFile, "true");
+        conf.set(el::Level::Global, el::ConfigurationType::Filename,
+             config.logFileName);
     }
     
     if ( clpVerbose.getValue() )
         config.verbose = true;
 
     if ( config.verbose ){
-	conf.set(el::Level::Debug, el::ConfigurationType::Enabled, "true");
-	conf.set(el::Level::Trace, el::ConfigurationType::Enabled, "true");
+        conf.set(el::Level::Debug, el::ConfigurationType::Enabled, "true");
+        conf.set(el::Level::Trace, el::ConfigurationType::Enabled, "true");
     }
 
     if (config.quiet){
-	conf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput,
-		 "false");
+        conf.set(el::Level::Global, el::ConfigurationType::ToStandardOutput,
+             "false");
     }
 
     el::Loggers::setDefaultConfigurations(conf, true);
@@ -343,22 +340,22 @@ int main (int argc, char *argv[])
 
     // Files  
     if (clpInFile.getValue() != "")
-	config.inputFileName = clpInFile.getValue();
+        config.inputFileName = clpInFile.getValue();
 
     if (clpMaterialFile.getValue() != "")
-	config.materialFile = clpMaterialFile.getValue();
+        config.materialFile = clpMaterialFile.getValue();
 
     if (clpPeriodicTableFile.getValue() != "")
-	config.periodicTableFileName = clpPeriodicTableFile.getValue();
+        config.periodicTableFileName = clpPeriodicTableFile.getValue();
 
     if (clpOutputPreamble.getValue() != "")
-	config.outputPreamble = clpOutputPreamble.getValue();
+        config.outputPreamble = clpOutputPreamble.getValue();
 
     if (clpNeighborRadius.getValue() > 0)
-	config.neighborRadius = clpNeighborRadius.getValue();
+        config.neighborRadius = clpNeighborRadius.getValue();
 
     if (clpNeighborLayers.getValue() > 0)
-	config.neighborLayers = clpNeighborLayers.getValue();    
+        config.neighborLayers = clpNeighborLayers.getValue();
     
     CLOG(DEBUG, programName.c_str()) << "Using the following configuration: "
 	"\n\n " << config.str();
@@ -369,59 +366,53 @@ int main (int argc, char *argv[])
 
     std::shared_ptr<SimulationBox> simbox;
 
-    //if (config.outputPreamble == ""){
-	//bailout("Specify preamble for output files", ErrorCode::Strain);
-    //}
-    
     if (config.periodicTableFileName == ""){
-	bailout("No periodic table file name specified!",
-		ErrorCode::PeriodicTable);
+        bailout("No periodic table file name specified!",
+            ErrorCode::PeriodicTable);
     }
 
     if (config.materialFile == ""){
-	bailout("No material file name specified!", ErrorCode::Material);
+        bailout("No material file name specified!", ErrorCode::Material);
     } 
 
-    try{
-	CLOG(DEBUG, programName.c_str()) << "loading periodic table file '" <<
-	    config.periodicTableFileName << "'";
-	fileHandler=getHandler(config.periodicTableFileName,
-			       xmlHandler, jsonHandler);
-	fileHandler->load(config.periodicTableFileName);
-	fileHandler->get(PeriodicTable::getInstance());
-    }catch(XmlException &e){
-	std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
-	bailout("Error while reading periodic table file",
-		ErrorCode::XML);
-    }
-    catch(PeriodicTableException &e){
-	std::cout << e.what() << ": "  << e.getMessage() << std::endl;
-	bailout("Error while filling periodic table",
-		ErrorCode::PeriodicTable);
+    try {
+        CLOG(DEBUG, programName.c_str()) << "loading periodic table file '" <<
+            config.periodicTableFileName << "'";
+        fileHandler=getHandler(config.periodicTableFileName,
+                       xmlHandler, jsonHandler);
+        fileHandler->load(config.periodicTableFileName);
+        fileHandler->get(PeriodicTable::getInstance());
+    } catch (XmlException &e) {
+        std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
+        bailout("Error while reading periodic table file",
+            ErrorCode::XML);
+    } catch (PeriodicTableException &e) {
+        std::cout << e.what() << ": "  << e.getMessage() << std::endl;
+        bailout("Error while filling periodic table",
+            ErrorCode::PeriodicTable);
     }
     
     if (config.inputFileName == ""){
-	bailout("No input file name specified!", ErrorCode::InOutFiles);
+        bailout("No input file name specified!", ErrorCode::InOutFiles);
     }
+
     try {
+        CLOG(DEBUG, programName.c_str()) << "loading input file " <<
+            config.inputFileName;
+        fileHandler=getHandler(config.inputFileName,
+                       xmlHandler, jsonHandler);
+        fileHandler->load(config.inputFileName);
+        fileHandler->get(simbox);
 
-	CLOG(DEBUG, programName.c_str()) << "loading input file " <<
-	    config.inputFileName;
-	fileHandler=getHandler(config.inputFileName,
-			       xmlHandler, jsonHandler);
-	fileHandler->load(config.inputFileName);
-	fileHandler->get(simbox);
-
-	simbox->generateNeighbors(config.neighborLayers,
-				  config.neighborRadius);
-
-    }catch(XmlException &e){
-	std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
-	bailout("Error while reading input file", ErrorCode::XML);
-    }catch(std::exception &e){
-	std::cerr << "caught exception " << e.what() << std::endl;
-	bailout("Unknown Error while reading input file",
-		ErrorCode::Unknown);
+        simbox->generateNeighbors(config.neighborLayers,
+                      config.neighborRadius);
+    } catch (XmlException &e) {
+        std::cerr << e.what() << ": "  << e.getMessage() << std::endl;
+        bailout("Error while reading input file", ErrorCode::XML);
+    } catch (std::exception &e) {
+        std::cerr << "caught exception " << e.what() << std::endl;
+        bailout("Unknown Error while reading input file",
+            ErrorCode::Unknown);
     }
        
     //-------------------------------------------------------------------------
@@ -435,93 +426,91 @@ int main (int argc, char *argv[])
 
     CLOG(TRACE, programName.c_str()) << "starting evaluation";
     
-    try{
+    try {
+        MaterialCollection collection("MaterialCollection");
 
-	MaterialCollection collection("MaterialCollection");
-	
-	try{
-	    fileHandler=getHandler(config.materialFile,
-				   xmlHandler, jsonHandler);
-	    fileHandler->load(config.materialFile);
-	    fileHandler->get(collection);
-	} catch(XmlException &e) {
-	    std::cerr << e.what() << std::endl;
-	    bailout("Error while reading material file" + std::string(e.what()),
-		    ErrorCode::XML);
-	}
-
-    std::vector<std::string> modes = clpEvaluationMode.getValue();
-
-    // need to generate neighbor list before evaluating strain
-    // \todo maybe call this function from strain tool
-    simbox->generateNeighbors(1, 0.0, false);
-
-    if (std::find(modes.begin(), modes.end(), "state") != modes.end()) {
-        std::vector<uint32_t> stateCount;
-        AtomState tmpState;
-
-        if (clpAtomState.getValue() == "interface")
-            tmpState = AtomState::ModifiedInterface;
-        else if (clpAtomState.getValue() == "exchange")
-            tmpState = AtomState::ModifiedExchangeReaction;
-        else if (clpAtomState.getValue() == "unknown")
-            tmpState = AtomState::ModifiedUnknown;
-
-        // out of plane dimension hardcoded here
-        for (uint32_t i = 0; i < simbox->getLattice().getSize()[2]; i++) {
-            uint32_t tmpAtomCount = simbox->getLattice().countAtomsInLayerByState(i, 2, tmpState);
-            uint32_t atomsInLayer = simbox->getLattice().getAtomsInLayer(i, 2).size();
-
-            if (tmpAtomCount > 0)
-                CLOG(INFO, programName.c_str()) << "Found " << tmpAtomCount << "/" << atomsInLayer << "atoms in layer " << i;
+        try {
+            fileHandler=getHandler(config.materialFile,
+                       xmlHandler, jsonHandler);
+            fileHandler->load(config.materialFile);
+            fileHandler->get(collection);
+        } catch (XmlException &e) {
+            std::cerr << e.what() << std::endl;
+            bailout("Error while reading material file" + std::string(e.what()),
+                ErrorCode::XML);
         }
-    }
 
-    if (std::find(modes.begin(), modes.end(), "strain") != modes.end()) {
-        if (clpOutputFormat.getValue() == "gsf") {
-            std::shared_ptr<Field3D<double>> strainField{};
+        std::vector<std::string> modes = clpEvaluationMode.getValue();
 
-            StrainTool st(simbox);
-            strainField = st.getStrainField(collection, -1.0);
+        // need to generate neighbor list before evaluating strain
+        // \todo maybe call this function from strain tool
+        simbox->generateNeighbors(1, 0.0, false);
 
-            //Field3D<double> compressedField = strainField->downsampling(2, 2, 4, DownsamplingFieldOperation::Avg);
-            Field3D<double> compressedField = strainField->flatten().interpolate();
+        if (std::find(modes.begin(), modes.end(), "state") != modes.end()) {
+            std::vector<uint32_t> stateCount;
+            AtomState tmpState;
 
-            Vector3D<indexType> res = compressedField.getSize();
+            if (clpAtomState.getValue() == "interface")
+                tmpState = AtomState::ModifiedInterface;
+            else if (clpAtomState.getValue() == "exchange")
+                tmpState = AtomState::ModifiedExchangeReaction;
+            else if (clpAtomState.getValue() == "unknown")
+                tmpState = AtomState::ModifiedUnknown;
 
-            compressedField.saveToGSFFile(clpOutputFile.getValue(), clpLayerIndex.getValue()/4, 2, res[0], res[1]);
-        } else {
-            LayerStrainInfo layerStrain;
+            // out of plane dimension hardcoded here
+            for (uint32_t i = 0; i < simbox->getLattice().getSize()[2]; i++) {
+                uint32_t tmpAtomCount = simbox->getLattice().countAtomsInLayerByState(i, 2, tmpState);
+                uint32_t atomsInLayer = simbox->getLattice().getAtomsInLayer(i, 2).size();
 
-            bool writeToFile = true;
+                if (tmpAtomCount > 0)
+                    CLOG(INFO, programName.c_str()) << "Found " << tmpAtomCount << "/" << atomsInLayer << "atoms in layer " << i;
+            }
+        }
 
-            // disable file output if no file preamble was given
-            if (clpOutputPreamble.getValue() == "")
-                writeToFile = false;
+        if (std::find(modes.begin(), modes.end(), "strain") != modes.end()) {
+            if (clpOutputFormat.getValue() == "gsf") {
+                std::shared_ptr<Field3D<double>> strainField{};
 
-            layerStrain = simbox->calculateStrain(collection, config.outputPreamble, -1.0, writeToFile);
+                StrainTool st(simbox);
+                strainField = st.getStrainField(collection, -1.0);
+
+                //Field3D<double> compressedField = strainField->downsampling(2, 2, 4, DownsamplingFieldOperation::Avg);
+                Field3D<double> compressedField = strainField->flatten().interpolate();
+
+                Vector3D<indexType> res = compressedField.getSize();
+
+                compressedField.saveToGSFFile(clpOutputFile.getValue(), clpLayerIndex.getValue()/4, 2, res[0], res[1]);
+            } else {
+                LayerStrainInfo layerStrain;
+
+                bool writeToFile = true;
+
+                // disable file output if no file preamble was given
+                if (clpOutputPreamble.getValue() == "")
+                    writeToFile = false;
+
+                layerStrain = simbox->calculateStrain(collection, config.outputPreamble, -1.0, writeToFile);
 
 #ifdef __VTK__
+                if (std::find(modes.begin(), modes.end(), "render") != modes.end()) {
+                    vtkSmartPointer<vtkTable> table = vtkSmartPointer<vtkTable>::New();
 
-            if (std::find(modes.begin(), modes.end(), "render") != modes.end()) {
-                vtkSmartPointer<vtkTable> table = vtkSmartPointer<vtkTable>::New();
+                    table = layerStrain.getTable();
+                    std::vector<DataSeries> dataSeries = layerStrain.get();
 
-                table = layerStrain.getTable();
-                std::vector<DataSeries> dataSeries = layerStrain.get();
+                    XYPlot xyp = XYPlot(table, "XYPlot");
 
-                XYPlot xyp = XYPlot(table, "XYPlot");
+                    axesLimits xAxisLimits = std::make_tuple(0, layerStrain.getLayerCount());
+                    axesLimits yAxisLimits = std::make_tuple(std::trunc(layerStrain.getMinimumStrain())-1, std::trunc(layerStrain.getMaximumStrain())+1);
+                    xyp.setAxesLimits(xAxisLimits, yAxisLimits, true, true);
 
-                axesLimits xAxisLimits = std::make_tuple(0, layerStrain.getLayerCount());
-                axesLimits yAxisLimits = std::make_tuple(std::trunc(layerStrain.getMinimumStrain())-1, std::trunc(layerStrain.getMaximumStrain())+1);
-                xyp.setAxesLimits(xAxisLimits, yAxisLimits, true, true);
+                    xyp.setAxesLabels("Layer", "Strain (%)");
+                    xyp.plot(dataSeries);
 
-                xyp.setAxesLabels("Layer", "Strain (%)");
-                xyp.plot(dataSeries);
-
-            }
+                }
 #endif
+            }
         }
-    }
     
         if (std::find(modes.begin(), modes.end(), "composition") != modes.end()) {
 #ifdef __VTK__
@@ -572,12 +561,11 @@ int main (int argc, char *argv[])
 #endif
         }
 	
-    } catch(std::exception &e){
-	std::cerr << "caught exception " << e.what() << std::endl;
-	bailout("Unknown Error while creating analysing lattice: " +
-		std::string(e.what()), ErrorCode::Unknown);
+    } catch(std::exception &e) {
+        std::cerr << "caught exception " << e.what() << std::endl;
+        bailout("Unknown Error while creating analysing lattice: " +
+            std::string(e.what()), ErrorCode::Unknown);
     }		
-
 
     //-------------------------------------------------------------------------
     

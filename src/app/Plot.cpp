@@ -21,12 +21,6 @@ This is simple tool to plot data files.
 #include <easyloggingcpp/easylogging++.h>
 
 #include <xtalsim.h>
-// #include <misc/Color.h>
-// #include <misc/XmlHandler.h>
-// #include <misc/Configuration.h>
-// #include <misc/ErrorCode.h>
-// #include <visualization/DataSeries.h>
-// #include <visualization/XYPlot.h>
 
 #ifdef __VTK__
 #include <vtkSmartPointer.h>
@@ -210,7 +204,6 @@ int main (int argc, char *argv[])
         std::shared_ptr<CsvHandler> csvfile;
         csvfile = std::make_shared<CsvHandler>(config.inputFileName, "CSVFile");
 
-        //table = csvfile->get();
         tmpTables.push_back(csvfile->get());
 
         uint32_t i = 0;
@@ -246,7 +239,11 @@ int main (int argc, char *argv[])
         uint32_t i = 0;
 
         for (auto journalName: journalNames) {
-            inputHandler.get(journal,journalName);
+            try {
+                inputHandler.get(journal,journalName);
+            } catch (XmlException) {
+                continue;
+            }
 
             tmpTables.push_back(vtkSmartPointer<vtkTable>::New());
 
