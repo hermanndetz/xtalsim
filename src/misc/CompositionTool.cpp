@@ -49,7 +49,7 @@ LayerCompositionInfo CompositionTool::AnalyzeLayer(indexType layerId) const {
 
 //------------------------------------------------------------------------------
 
-//! Analyzes the complete Lattice of a SimulationBox and returns compositoin information.
+//! Analyzes the complete Lattice of a SimulationBox and returns composition information.
 //! \return Composition information about SimulationBox.
 CompositionInfo CompositionTool::AnalyzeStructure (void) const {
     CompositionInfo result;

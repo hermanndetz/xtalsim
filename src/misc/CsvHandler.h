@@ -29,6 +29,7 @@ of the MIT license.  See the LICENSE file for details.
 #endif
 
 #include <physics/PeriodicTable.h>
+#include <misc/BondInfo.h>
 #include <misc/CompositionInfo.h>
 #include <misc/Journal.h>
 
@@ -92,6 +93,10 @@ public:
     void save (const std::string &fileName, int32_t substCol,
                const std::string separator="\t",
                const std::string &header="");
+    //! Save data fo file, replace element id with element name.
+    void save (const std::string &fileName, std::vector<int32_t> substCols,
+               const std::string separator="\t",
+               const std::string &header="");
 
     //! Print data to std out
     void dump ();
@@ -103,6 +108,9 @@ public:
 
     //! Loads CompositionInfo data into object.
     CsvHandler & operator = (const CompositionInfo &src);
+
+    //! Loads BondInfo data into object.
+    CsvHandler & operator = (const BondInfo &src);
 
 #ifdef __VTK__
     vtkSmartPointer<vtkVariantArray> getCol (unsigned long col);

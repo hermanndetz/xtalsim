@@ -22,9 +22,10 @@ size_t Hash::operator()(const Vector3D<indexType> &vector) const
 
 //------------------------------------------------------------------------------
 
-//! Compute a unique hash value for a Vector3D object. Even for permutations of
-//! the same indices a different value has to be delivered.
-//! \param vector 3D Vector whose hash shall be computed.
+//! Compute a unique hash value for a tuple of material name and element ID 
+//! object. Even for permutations of the same indices a different value has 
+//! to be delivered.
+//! \param tuple of material name (string) and element ID (elementType)
 //! \return Calculated hash value.
 size_t Hash::operator()(const std::tuple<std::string, elementType> &entry) const
 {
@@ -33,6 +34,24 @@ size_t Hash::operator()(const std::tuple<std::string, elementType> &entry) const
                                       std::to_string(std::get<1>(entry))
                                       )
              );
+}
+
+//------------------------------------------------------------------------------
+
+//! Compute a unique hash value for a tuple of two element IDs. 
+//! This function provides the same value independent of the permutation.
+//! \param tuple of two element IDs (elementType)
+//! \return Calculated hash value.
+
+size_t Hash::operator()(const std::tuple<elementType,elementType> &entry) const
+{
+    return ( std::hash<std::string>{}( std::min(std::get<0>(entry), std::get<1>(entry)) 
+                                        + "__" +
+                                        std::max(std::get<0>(entry), std::get<1>(entry))
+            
+            )
+
+           );
 }
 
 //------------------------------------------------------------------------------

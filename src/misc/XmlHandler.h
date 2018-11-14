@@ -118,6 +118,11 @@ class XmlHandler : public FileHandler{
     void set(const CompositionInfo &composition);
     //! Fill vector of CompositionInfos from XML file.
     void get(std::vector<CompositionInfo> &compositions) const;
+    //
+    //! Write BondInfo to DOM structure.
+    void set(const BondInfo &composition);
+    //! Fill vector of BondInfos from XML file.
+    void get(std::vector<BondInfo> &compositions) const;
     
     //! Write Journal to DOM structure.
     template <class T>

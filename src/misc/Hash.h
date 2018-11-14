@@ -22,6 +22,7 @@ public:
     //! Generates hash for 3D vector.
     size_t operator()(const Vector3D<indexType> &vector) const;
     size_t operator()(const std::tuple<std::string, elementType> &entry) const;
+    size_t operator()(const std::tuple<elementType,elementType> &entry) const;
 };
 
 #endif

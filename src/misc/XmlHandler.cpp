@@ -733,6 +733,91 @@ void XmlHandler::get(std::vector<CompositionInfo> &compositions) const
 
 //------------------------------------------------------------------------------
 
+//! Transfers content of BondInfo to XML
+//! \param composition Bond information that shall be transferred
+void XmlHandler::set(const BondInfo &bonds)
+{
+
+    CLOG(TRACE, logName_) << "writing BondInfo to XML";
+    
+    pugi::xml_node bondsNode, layerNode, entryNode;
+    int counter=0;
+    const PeriodicTable &pt = PeriodicTable::getInstance();
+    
+    bondsNode = xmlDoc_.append_child("bonds");
+
+    for (auto i=0; i<bonds.getLayerCount(); i++) {
+        LayerBondInfo layer = bonds.getLayer(i);
+        layerNode=bondsNode.append_child("layer");
+        layerNode.append_child("index").text() = i;
+        
+        for (auto entry : layer) {
+
+            entryNode=layerNode.append_child("element");
+            
+            auto key = std::get<0>(entry);
+        
+            /* if required by XML, has to be retrofitted within BondInfo etc. */
+            /* entryNode.append_child("material").text() = std::get<0>(key).c_str(); */
+            entryNode.append_child("id1").text() = std::get<0>(key);
+            entryNode.append_child("name1").text() = pt.getById(std::get<0>(key)).symbol.c_str();
+            entryNode.append_child("id2").text() = std::get<1>(key);
+            entryNode.append_child("name2").text() = pt.getById(std::get<1>(key)).symbol.c_str();
+            entryNode.append_child("count").text() = std::get<1>(entry);
+        }
+
+        counter++;
+    }
+
+    CLOG(DEBUG, logName_) << counter <<" atomic layers written to XML";
+    CLOG(TRACE, logName_) << "BondInfo successfully written";    
+}
+
+//------------------------------------------------------------------------------
+
+//! Creates a simbox object from the stored data and returns a pointer. This
+//! method was chosen as some parameters of the SimulationBox have to be set
+//! in the constructor since they are not supposed to change. Therefore it was
+//! neglected to create a member function to set these values.
+//! \param simbox SimulationBox that shall be filled.
+/* void XmlHandler::get(std::vector<BondInfo> &compositions) const */
+/* { */
+
+/*     CLOG(TRACE, logName_) << "generating BondInfos from XML"; */
+
+/* 	for (pugi::xml_node compNode = xmlDoc_.child("composition"); */
+/* 	    compNode; compNode=compNode.next_sibling("composition")) { */
+
+/*         BondInfo comp; */
+        
+/*         for (pugi::xml_node layerNode = compNode.child("layer"); */
+/*             layerNode; layerNode=layerNode.next_sibling("layer")) { */
+
+/*             LayerBondInfo layer; */
+
+/*             for (pugi::xml_node elementNode = layerNode.child("element"); */
+/*                 elementNode; elementNode=elementNode.next_sibling("element")) { */
+
+/*                 auto key = std::make_tuple(elementNode.child("material").text().as_string("undef"), */
+/*                                            (elementType)elementNode.child("id").text().as_int(0) ); */
+
+/*                 layer[key] = elementNode.child("count").text().as_int(0); */
+
+/*             } */
+            
+/*             comp << layer; */
+
+/*         } */
+
+/*         compositions.push_back(comp); */
+/*     } */
+        
+/*     CLOG(TRACE, logName_) << "BondInfos successfully generated"; */
+   
+/* } */
+
+//------------------------------------------------------------------------------
+
 //! \param journal Journal the entries shall be written to.
 //! \param entry First entry node of XML <journal> environment
 //! \return Number of read entries.

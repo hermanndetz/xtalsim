@@ -858,7 +858,6 @@ StrainInfo SimulationBox::getStrainInfo(const MaterialCollection &materials,
 //! \return CompositionInfo returns the composition information
 CompositionInfo SimulationBox::analyzeComposition(const std::string &outputFileName) const
 {
-    
     CompositionInfo compInfo;
     CompositionTool compTool = CompositionTool(*this);
 
@@ -871,6 +870,25 @@ CompositionInfo SimulationBox::analyzeComposition(const std::string &outputFileN
     }
 
     return compInfo;
+}
+
+//------------------------------------------------------------------------------
+
+//! Generate bond statistics and write them to file.
+BondInfo SimulationBox::analyzeBonds(const std::string &outputFileName) const
+{
+    BondInfo bondInfo;
+    BondTool bondTool = BondTool(*this);
+
+    bondInfo = bondTool.AnalyzeStructure();
+
+    if (outputFileName != "") {
+        CsvHandler bondInfoCSV = CsvHandler("CSV File");
+        bondInfoCSV = bondInfo;
+        bondInfoCSV.save(outputFileName, std::vector<int32_t>{1, 2}, "\t", "Layer\tElement1\tElement2\tCount");
+    }
+
+    return bondInfo;
 }
 
 //------------------------------------------------------------------------------

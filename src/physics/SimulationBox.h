@@ -39,6 +39,7 @@ of the MIT license.  See the LICENSE file for details.
 #include <misc/LayerStrainInfo.h>
 #include <misc/StrainTool.h>
 #include <misc/ArrheniusFactor.h>
+#include <misc/BondTool.h>
 #include <misc/CompositionTool.h>
 
 //! \brief Representation of the simulation box.
@@ -194,6 +195,9 @@ public:
 
     //! Obtain composition info and write it to file.
     CompositionInfo analyzeComposition(const std::string &outputFileName) const;
+
+    //! Generate bond statistics and write them to file.
+    BondInfo analyzeBonds(const std::string &outputFileName) const;
 
     //! Create energetic optimized interface roughness.
     void createOptimizedRoughness(Range3D<indexType> interfaceRange,

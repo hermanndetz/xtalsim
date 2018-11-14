@@ -286,7 +286,57 @@ void CsvHandler::save (const std::string &fileName, const std::string separator,
 //------------------------------------------------------------------------------
 
 //! Save data fo file, replace element id with element name.
+//! \remark This function will be deprecated in future.
 void CsvHandler::save (const std::string &fileName, int32_t substCol, const std::string separator, const std::string &header) {
+    save(fileName, std::vector<int32_t>{substCol}, separator, header);
+    /* std::ofstream out(fileName, std::ofstream::out); */
+
+    /* const PeriodicTable &pt = PeriodicTable::getInstance(); */
+    
+    /* if (out.is_open()) { */
+    /*     if (header != "") { */
+    /*         out << "# " << header << std::endl; */
+    /*     } */
+
+    /*     for (uint32_t i = 0; i < data_[0].size(); i++) { */
+    /*         for (uint32_t j = 0; j < data_.size(); j++) { */
+    /*             // j == substCol is sufficient here */
+    /*             // if substitution is disabled, substCol is -1, which will not */
+    /*             // be reached here (within reasonable limits) */
+    /*             // worst case scenario: saving 4,294,967,295 columns will */
+    /*             // result in a substitution, if a periodic table reference */ 
+    /*             // is provided. */
+    /*             if ((j == (unsigned) substCol) ) { */
+    /*                 out << pt.getById(data_[j][i].n).symbol; */
+    /*             } else { */
+    /*                 switch (colTypes_[j]) { */
+    /*                 case ColumnDataType::Integer: */
+    /*                     out << data_[j][i].n; */
+    /*                     break; */
+    /*                 case ColumnDataType::Float: */
+    /*                     out << data_[j][i].d; */
+    /*                     break; */
+    /*                 default: */
+    /*                     throw CsvException("Unknown column data type!", "", CsvException::Id::UnknownColumnType); */
+    /*                     break; */
+    /*                 } */
+    /*             } */
+
+    /*             out << separator; */
+    /*         } */
+            
+    /*         out << std::endl; */
+    /*     } */
+
+    /*     out.close(); */
+    /* } */
+}
+
+//------------------------------------------------------------------------------
+//! Save data fo file, replace element id with element name.
+void CsvHandler::save (const std::string &fileName, std::vector<int32_t> substCols,
+           const std::string separator,
+           const std::string &header) {
     std::ofstream out(fileName, std::ofstream::out);
 
     const PeriodicTable &pt = PeriodicTable::getInstance();
@@ -298,13 +348,7 @@ void CsvHandler::save (const std::string &fileName, int32_t substCol, const std:
 
         for (uint32_t i = 0; i < data_[0].size(); i++) {
             for (uint32_t j = 0; j < data_.size(); j++) {
-                // j == substCol is sufficient here
-                // if substitution is disabled, substCol is -1, which will not
-                // be reached here (within reasonable limits)
-                // worst case scenario: saving 4,294,967,295 columns will
-                // result in a substitution, if a periodic table reference 
-                // is provided.
-                if ((j == (unsigned) substCol) ) {
+                if (std::find(substCols.begin(), substCols.end(), j) != substCols.end()) {
                     out << pt.getById(data_[j][i].n).symbol;
                 } else {
                     switch (colTypes_[j]) {
@@ -438,6 +482,37 @@ CsvHandler & CsvHandler::operator = (const CompositionInfo &src) {
             data_[2].push_back(tmp);
         }
     }
+}
+
+//------------------------------------------------------------------------------
+
+//! Loads BondInfo data into object.
+//! \param src BondInfo structure to be loaded.
+//! \todo does actually not return anything
+CsvHandler & CsvHandler::operator = (const BondInfo &src) {
+    this->clear();
+    this->addCol(ColumnDataType::Integer, "layer");
+    this->addCol(ColumnDataType::Integer, "element1");
+    this->addCol(ColumnDataType::Integer, "element2");
+    this->addCol(ColumnDataType::Integer, "count");
+    //
+    //! \todo implement iterator in CompositionInfo to make this loop simpler
+    for (uint32_t i = 0; i < src.getLayerCount(); i++) {
+        LayerBondInfo layer = src.getLayer(i);
+        dataField tmp{};
+
+        for (auto entry: layer) {
+            tmp.n = i;
+            data_[0].push_back(tmp);
+            tmp.n = std::get<0>(std::get<0>(entry));
+            data_[1].push_back(tmp);
+            tmp.n = std::get<1>(std::get<0>(entry));
+            data_[2].push_back(tmp);
+            tmp.n = std::get<1>(entry);
+            data_[3].push_back(tmp);
+        }
+    }
+
 }
 
 //------------------------------------------------------------------------------

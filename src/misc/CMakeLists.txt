@@ -8,6 +8,8 @@
 # list source files
 set (FILES
   ArrheniusFactor.cpp
+  BondInfo.cpp
+  BondTool.cpp
   Color.cpp
   CompositionInfo.cpp
   CompositionTool.cpp

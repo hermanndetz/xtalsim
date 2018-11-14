@@ -20,20 +20,10 @@ of the MIT license.  See the LICENSE file for details.
 #include <easyloggingcpp/easylogging++.h>
 
 #include <xtalsim.h>
-// #include <misc/JsonHandler.h>
-// #include <misc/XmlHandler.h>
-// #include <misc/Configuration.h>
-// #include <misc/ErrorCode.h>
-// #include <physics/SimulationBox.h>
-// #include <physics/Range3D.h>
-// #include <physics/PeriodicTable.h>
 
 #ifdef __VTK__
 #include <vtkSmartPointer.h>
 #include <vtkTable.h>
-
-// #include <visualization/HistogramPlot.h>
-// #include <visualization/XYPlot.h>
 #endif
 
 INITIALIZE_EASYLOGGINGPP
@@ -144,11 +134,11 @@ int main (int argc, char *argv[])
 #ifdef __VTK__
     TCLAP::MultiArg<std::string> clpEvaluationMode("", "mode",
                 "Defines, which calculations should be performed. "
-                "Options are state, strain, composition and render.", false, "MODE");
+                "Options are state, strain, composition, bonds and render.", false, "MODE");
 #else
     TCLAP::MultiArg<std::string> clpEvaluationMode("", "mode",
                 "Defines, which calculations should be performed. "
-                "Options are state, strain and composition.", false, "MODE");
+                "Options are state, strain, composition and bonds.", false, "MODE");
 #endif
 
     TCLAP::ValueArg<std::string> clpAtomState("",
@@ -537,26 +527,55 @@ int main (int argc, char *argv[])
 		} catch (std::exception &e) {}
 		
 		h2.set(compInfo);
-		h2.save(config.outputPreamble+"composition.json");
-		
-                std::vector<elementType> filterElements;
+        h2.save(config.outputPreamble+"composition.json");
 
-                for (auto element: clpFilterElements.getValue()) {
-                    filterElements.push_back(PeriodicTable::getInstance().getBySymbol(element).id);
-                }
+        std::vector<elementType> filterElements;
+
+        for (auto element: clpFilterElements.getValue()) {
+            filterElements.push_back(PeriodicTable::getInstance().getBySymbol(element).id);
+        }
+
+        vtkSmartPointer<vtkTable> table = vtkSmartPointer<vtkTable>::New();
+        table = compInfo.getSparse(filterElements, clpInterpolate.getValue());
+        std::vector<DataSeries> dataSeries = compInfo.get();
+
+        XYPlot xyp = XYPlot(table, "XYPlot");
+        axesLimits xAxisLimits = std::make_tuple(0, compInfo.getLayerCount());
+        axesLimits yAxisLimits = std::make_tuple(0.0, compInfo.getMaxAtomCount()*1.1);
+        xyp.setAxesLimits(xAxisLimits, yAxisLimits, true, true);
+        xyp.setAxesLabels("Layer", "Composition (atoms/layer)");
+        xyp.plot(dataSeries);
+            }
+#endif
+        }
+
+        if (std::find(modes.begin(), modes.end(), "bonds") != modes.end()) {
+#ifdef __VTK__
+            if (std::find(modes.begin(), modes.end(), "render") == modes.end()) {
+#endif
+                simbox->analyzeBonds(config.outputPreamble+"bonds.dat");
+#ifdef __VTK__
+            } else {
+                BondInfo bondInfo;
+                bondInfo = simbox->analyzeBonds(config.outputPreamble+"bonds.dat");
+
+                std::vector<std::tuple<elementType,elementType>> filterElements;
+
+                // \todo Filtering not yet implemented here
+                /* for (auto element: clpFilterElements.getValue()) { */
+                /*     filterElements.push_back(PeriodicTable::getInstance().getBySymbol(element).id); */
+                /* } */
 
                 vtkSmartPointer<vtkTable> table = vtkSmartPointer<vtkTable>::New();
-                table = compInfo.getSparse(filterElements, clpInterpolate.getValue());
-                std::vector<DataSeries> dataSeries = compInfo.get();
+                table = bondInfo.getSparse(filterElements, clpInterpolate.getValue());
+                std::vector<DataSeries> dataSeries = bondInfo.get();
 
                 XYPlot xyp = XYPlot(table, "XYPlot");
-                axesLimits xAxisLimits = std::make_tuple(0, compInfo.getLayerCount());
-                axesLimits yAxisLimits = std::make_tuple(0.0, compInfo.getMaxAtomCount()*1.1);
+                axesLimits xAxisLimits = std::make_tuple(0, bondInfo.getLayerCount());
+                axesLimits yAxisLimits = std::make_tuple(0.0, bondInfo.getMaxBondCount()*1.1);
                 xyp.setAxesLimits(xAxisLimits, yAxisLimits, true, true);
                 xyp.setAxesLabels("Layer", "Composition (atoms/layer)");
                 xyp.plot(dataSeries);
-                //HistogramPlot hp = HistogramPlot(table, "HistogramPlot");
-                //hp.plot();
             }
 #endif
         }
