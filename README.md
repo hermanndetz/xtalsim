@@ -64,4 +64,4 @@ You can find a list of publications related to xtalsim (or one of its pre-versio
 
 ## Acknowledgements
 
-Development of the initial version of xtalsim by Hermann Detz and Juergen Maier at TU Wien was funded by the Austrian Science Fund (FWF): P26100-N27 and through an APART Fellowship of the Austrian Academy of Sciences.
+Development of the initial version of xtalsim by Hermann Detz and Juergen Maier at TU Wien was funded by the Austrian Science Fund (FWF): P26100-N27 and through an APART Fellowship of the Austrian Academy of Sciences. Recent modifications were also performed at the Central European Institute of Technology at Brno University of Technology with support by the ESF under the project CZ.02.2.69/0.0/0.0/16_027/0008371.
