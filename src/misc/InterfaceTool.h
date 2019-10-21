@@ -21,6 +21,7 @@ of the MIT license.  See the LICENSE file for details.
 
 #include <easyloggingcpp/easylogging++.h>
 
+#include <misc/BondInfo.h>
 #include <misc/Journal.h>
 #include <misc/XmlHandler.h>
 #include <misc/JsonHandler.h>

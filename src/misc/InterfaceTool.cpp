@@ -98,6 +98,7 @@ void InterfaceTool::createOptimizedRoughness(
     Range3D<indexType> range;
     Optimization optimization("localRelaxation");
     const Material *materialPointer;
+    uint32_t atomsInInterface;
 
     std::stringstream journalName{};
     std::stringstream journalDesc{};
@@ -200,6 +201,10 @@ void InterfaceTool::createOptimizedRoughness(
     interfaceRange.apply[inPlaneDimension2] = false;
     interfaceRange.apply[outOfPlaneDimension] = true;
 
+    atomsInInterface = simbox_->getAtomCount(interfaceRange);
+    posJournal_.add("atoms in interface range: " + std::to_string(atomsInInterface));
+    std::uniform_real_distribution<double> distribution(0.0,1.0);
+
     optimization.registerAction(std::string("MMC"), &SimulationBox::mmcRelax,1);
     
     modificationIndex_ = 1;
@@ -287,7 +292,19 @@ void InterfaceTool::createOptimizedRoughness(
             }
 
         
+            // always accept, if metric gets better
             if (tmpMetric < bestMetric) {
+                bestConfiguration = lattice.backupAtoms(range);
+                bestMetric = tmpMetric;
+                bestIndex = index;
+                modAtomBestConfiguration = atom;
+                
+            } else if (distribution(random_) <= 
+                    ArrheniusFactor::Boltzmann(
+                            std::abs(tmpMetric - bestMetric) * atomsInInterface,
+                            simbox_->getLattice().getTemperature()
+                                   )) {
+                posJournal_.add("moveAtom: accepting pos " + index.str() + " at higher energy");
                 bestConfiguration = lattice.backupAtoms(range);
                 bestMetric = tmpMetric;
                 bestIndex = index;
@@ -315,9 +332,15 @@ void InterfaceTool::createOptimizedRoughness(
             continue;
                 
         atomCheckCount += atomCheckStep;
-        CLOG(INFO, logName_) << "\e[1m" << std::fixed << std::setprecision(0)
-                             << 100.0*((double)atomCount / (double)atomsToDeployCount)
-                             << "% of atoms processed" << "\e[0m";
+
+        std::stringstream progress{};
+        progress << std::fixed << std::setprecision(0)
+                             << 100.0*((double)atomCount / (double)atomsToDeployCount);
+
+        CLOG(INFO, logName_) << "\e[1m" << progress.str() <<
+                             "% of atoms processed" << "\e[0m";
+        BondInfo bondInfo;
+        bondInfo = simbox_->analyzeBonds(journalPreamble+"_"+progress.str()+"_bonds.dat");
     }
 
     
