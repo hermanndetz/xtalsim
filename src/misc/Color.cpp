@@ -108,6 +108,13 @@ colorType Color::get (const uint8_t index) const
     return rgb_[index];
 }
 
+//------------------------------------------------------------------------------
+
+double Color::get_double (const uint8_t index) const
+{
+    return (double)(rgb_[index])/255.0;
+}
+
 //##############################################################################
 
 

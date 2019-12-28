@@ -59,6 +59,8 @@ public:
     Vector3D<colorType> get (void) const;
     //! Select single component. 
     colorType get (const uint8_t index) const;
+    //! Select single component converted to double [0:1]
+    double get_double (const uint8_t index) const;
 };
 
 #endif

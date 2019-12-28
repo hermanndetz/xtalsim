@@ -9,8 +9,10 @@ of the MIT license.  See the LICENSE file for details.
 
 #ifdef __VTK__
 
+/* SimulationBoxRenderer::SimulationBoxRenderer (const Configuration &config, const char *logName): */
+/*     config_(config), windowWidth_(1280), windowHeight_(864) */
 SimulationBoxRenderer::SimulationBoxRenderer (const Configuration &config, const char *logName):
-    config_(config), windowWidth_(1280), windowHeight_(864)
+    config_(config), windowWidth_(1920), windowHeight_(1440)
 {
 
     renderer_ = vtkSmartPointer<vtkRenderer>::New();
@@ -22,7 +24,7 @@ SimulationBoxRenderer::SimulationBoxRenderer (const Configuration &config, const
     renderWindowInteractor_->SetRenderWindow(renderWindow_);
 
     renderer_->SetBackground(255, 255, 255);
-    renderWindow_->SetSize(864,864);
+    renderWindow_->SetSize(1440,1440);
 
     // render and interact
     vtkSmartPointer<KeyPressInteractorStyle> style =
@@ -65,7 +67,7 @@ inline bool SimulationBoxRenderer::continueLoop(Atom *atom) const
     uint8_t outOfPlaneDimension = simbox_->getOutOfPlaneDimension();
     
     // contains all abort conditions for a single atom
-    if (modifiedAtomsInLayer_[atom->getIndex()[outOfPlaneDimension]] == false) {
+    if ((config_.modifiedOnly == true) && (modifiedAtomsInLayer_[atom->getIndex()[outOfPlaneDimension]] == false)) {
         return true;
     }
         
@@ -154,16 +156,19 @@ void SimulationBoxRenderer::renderAtoms (vtkSmartPointer<vtkRenderer> renderer)
     vtkSmartPointer<vtkLookupTable> colors = vtkSmartPointer<vtkLookupTable>::New();
     // 4 table values: (index), red, green, blue, opacity
     colors->SetNumberOfTableValues(elements.size());
+    colors->Build();
+
 
     for (int i = 0; i < elements.size(); i++) {
-        colors->SetTableValue(i, elements[i].color.get(0),
-                              elements[i].color.get(1), elements[i].color.get(2), 1.0);
+        colors->SetTableValue(i, elements[i].color.get_double(0),
+                              elements[i].color.get_double(1), elements[i].color.get_double(2), 1.0);
         colorElementRelation.push_back(std::make_tuple(i, elements[i].id));
     }
 
     if (modifiedAtomsSet() == false)
         evaluateModifiedAtomsInLayers();
 
+    int i = 0;
     for (auto atom: simbox_->getLattice().getAtomList(displayRange_[renderer])) {
         if ( continueLoop(atom) )
             continue;
@@ -177,6 +182,7 @@ void SimulationBoxRenderer::renderAtoms (vtkSmartPointer<vtkRenderer> renderer)
                                            return std::get<1>(val) == atom->getElementId();});
 
         auto colID = std::distance(colorElementRelation.begin(), colElement);
+
 
         col->InsertNextValue(colID);
     }
@@ -194,6 +200,7 @@ void SimulationBoxRenderer::renderAtoms (vtkSmartPointer<vtkRenderer> renderer)
     vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
     sphereSource->SetThetaResolution(16);
     sphereSource->SetPhiResolution(16);
+    sphereSource->SetRadius(0.7);
 
     // object to group sphere and grid and keep smooth interaction
     vtkSmartPointer<vtkGlyph3D> glyph3D = vtkSmartPointer<vtkGlyph3D>::New();
@@ -983,10 +990,10 @@ void SimulationBoxRenderer::addInterfaces(double commandLineHeightShare,
         camera->SetFocalPoint(cameraPositionsif[j][0], cameraPositionsif[j][1], atom->getPosition()[2]);
         camera->SetParallelScale(10.0);
 
-        if ((j%2) == 0)
-            renderer->SetBackground(1.0, 1.0, 1.0);
-        else
-            renderer->SetBackground(0.8, 0.8, 0.8);
+        /* if ((j%2) == 0) */
+        /*     renderer->SetBackground(1.0, 1.0, 1.0); */
+        /* else */
+        /*     renderer->SetBackground(0.8, 0.8, 0.8); */
 
         tmpPosition = {-1.0, 0.0, 0.0};
         camera->SetViewUp(tmpPosition[0], tmpPosition[1], tmpPosition[2]);
