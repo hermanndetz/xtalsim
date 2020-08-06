@@ -657,7 +657,7 @@ Field3D<T> Field3D<T>::downsampling(uint32_t factorX, uint32_t factorY, uint32_t
                                     result(i,j,k) = values_[i*factorX+ii][j*factorY+jj][k*factorZ+kk];
                                 break;
                             case DownsamplingFieldOperation::Avg:
-                                [[fallthrough]]
+                                [[fallthrough]];
                             case DownsamplingFieldOperation::Sum:
                                 result.addToPoint(i,j,k, values_[i*factorX+ii][j*factorY+jj][k*factorZ+kk]);
                                 break;
