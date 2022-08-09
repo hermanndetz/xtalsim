@@ -37,6 +37,7 @@ CompositionInfo::~CompositionInfo() {
 //! information.
 CompositionInfo & CompositionInfo::operator << (LayerCompositionInfo layer) {
     data.push_back(layer);
+    return *this;
 }
 
 //------------------------------------------------------------------------------

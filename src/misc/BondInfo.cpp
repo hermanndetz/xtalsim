@@ -37,6 +37,7 @@ BondInfo::~BondInfo() {
 //! information.
 BondInfo & BondInfo::operator << (LayerBondInfo layer) {
     data.push_back(layer);
+    return *this;
 }
 
 //------------------------------------------------------------------------------

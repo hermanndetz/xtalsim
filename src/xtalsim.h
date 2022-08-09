@@ -38,10 +38,12 @@ of the MIT license.  See the LICENSE file for details.
 #include <simulation/TersoffParameter.h>
 #include <simulation/TersoffPotential.h>
 
+#ifdef __VTK__
 #include <visualization/DataSeries.h>
 #include <visualization/HistogramPlot.h>
 #include <visualization/SimulationBoxRenderer.h>
 #include <visualization/XYPlot.h>
+#endif
 
 #endif
 

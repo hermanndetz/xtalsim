@@ -5,7 +5,7 @@
 # of the MIT license.  See the LICENSE file for details.
 ###
 
-cmake_minimum_required (VERSION 2.6)
+cmake_minimum_required (VERSION 2.8.12)
 project (Xtalsim CXX)
 
 # Version number

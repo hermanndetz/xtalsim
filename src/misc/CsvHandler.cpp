@@ -455,6 +455,8 @@ CsvHandler & CsvHandler::operator += (const Journal<UDTuple> &src) {
             i++;
         }
     }
+
+    return *this;
 }
 
 //------------------------------------------------------------------------------
@@ -482,6 +484,8 @@ CsvHandler & CsvHandler::operator = (const CompositionInfo &src) {
             data_[2].push_back(tmp);
         }
     }
+
+    return *this;
 }
 
 //------------------------------------------------------------------------------
@@ -513,6 +517,7 @@ CsvHandler & CsvHandler::operator = (const BondInfo &src) {
         }
     }
 
+    return *this;
 }
 
 //------------------------------------------------------------------------------
