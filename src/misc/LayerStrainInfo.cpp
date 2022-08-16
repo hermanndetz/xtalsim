@@ -35,6 +35,7 @@ LayerStrainInfo::~LayerStrainInfo() {
 //! \param layer Strain info of a layer.
 LayerStrainInfo & LayerStrainInfo::operator << (LayerStrainInfoData layer) {
     data.push_back(layer);
+    return *this;
 }
 
 //------------------------------------------------------------------------------
